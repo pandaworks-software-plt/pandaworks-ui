@@ -1,0 +1,12 @@
+{
+  "name": "pandawork-ui",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.11.0",
+  "scripts": {
+    "dev": "pnpm --filter @pandawork-ui/demo dev",
+    "build": "pnpm registry:build && pnpm --filter @pandawork-ui/demo build",
+    "registry:build": "pnpm --filter @pandawork-ui/registry registry:build",
+    "lint": "pnpm --filter @pandawork-ui/demo lint"
+  }
+}
