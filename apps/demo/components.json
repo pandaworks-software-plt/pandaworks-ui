@@ -19,8 +19,8 @@
   },
   "iconLibrary": "lucide",
   "registries": {
-    "@pandahrms": {
-      "url": "https://raw.githubusercontent.com/pandaworks-software-plt/pandahrms-ui-registry/main/public/r/{name}.json"
+    "@pandawork": {
+      "url": "https://raw.githubusercontent.com/pandaworks-software-plt/pandawork-ui/main/public/r/{name}.json"
     }
   }
 }

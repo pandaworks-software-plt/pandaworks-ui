@@ -1,4 +1,4 @@
-# Pandahrms UI Registry
+# Pandawork UI Registry
 
 > Shared component registry for Pandahrms frontend projects. Built on shadcn/ui with Tailwind CSS v4, OKLCH color space, and Radix UI primitives.
 
@@ -7,7 +7,7 @@
 Install any component via the shadcn CLI:
 
 ```bash
-pnpm dlx shadcn@latest add https://raw.githubusercontent.com/pandaworks-software-plt/pandahrms-ui-registry/main/public/r/<component-name>.json
+pnpm dlx shadcn@latest add https://raw.githubusercontent.com/pandaworks-software-plt/pandawork-ui/main/public/r/<component-name>.json
 ```
 
 Components are installed to `src/components/ui/`. Import from `@/components/ui/<name>`.
@@ -1208,13 +1208,23 @@ Each entry contains:
 
 ### [Unreleased]
 
+#### registry (repo rename)
+
+- change: renamed
+- breaking: yes
+- details: Repository renamed from `pandahrms-ui-registry` to `pandawork-ui`. Registry URL changed. Registry key changed from `@pandahrms` to `@pandawork`.
+- action:
+  - Update `components.json` registry URL from `pandahrms-ui-registry` to `pandawork-ui`
+  - Update registry key from `@pandahrms` to `@pandawork` in `components.json`
+  - Update all `npx shadcn add` commands to use new URL
+
 #### button
 
 - change: modified
 - breaking: yes
 - details: `default` variant is now standard shadcn/ui style (plain). Previous `default` (blue with inset shadows) moved to new `brand` variant.
 - action:
-  - Run `npx shadcn@latest add @pandahrms/button --overwrite --yes` to update the component
+  - Run `npx shadcn@latest add @pandawork/button --overwrite --yes` to update the component
   - Search codebase for `variant="default"` on `<Button>` -- if the intent was the blue styled button, change to `variant="brand"`
   - Buttons with no explicit `variant` prop now render as the plain default -- verify this is acceptable or add `variant="brand"` where the blue button was expected
   - Action presets `create` and `save` already updated to use `brand` -- no change needed if using `action="create"` or `action="save"`
@@ -1229,7 +1239,7 @@ Each entry contains:
 - breaking: yes
 - details: Decoupled from `next-themes`. No longer imports or depends on ThemeProvider. Improved type safety and accessibility.
 - action:
-  - Run `npx shadcn@latest add @pandahrms/sonner --overwrite --yes`
+  - Run `npx shadcn@latest add @pandawork/sonner --overwrite --yes`
   - If your project was relying on sonner auto-detecting theme from `next-themes`, you may need to pass the `theme` prop explicitly
 
 #### all components (24 affected)
@@ -1238,7 +1248,7 @@ Each entry contains:
 - breaking: no
 - details: Added `data-slot` attributes for DOM identification. Standardized double quotes. No API changes.
 - action:
-  - Run `npx shadcn@latest add @pandahrms/<component> --overwrite --yes` for each component to pick up the changes
+  - Run `npx shadcn@latest add @pandawork/<component> --overwrite --yes` for each component to pick up the changes
   - No code changes required in consuming projects
 
 #### barrel exports (19 components)
@@ -1267,7 +1277,7 @@ Each entry contains:
 - breaking: no
 - details: Added `action` prop with 12 presets (create, edit, save, delete, cancel, view, export, import, archive, duplicate, print, link). Added `icon`, `tooltip`, and `loading` props. Auto-resolves icon, variant, label, and tooltip from action presets.
 - action:
-  - Run `npx shadcn@latest add @pandahrms/button --overwrite --yes`
+  - Run `npx shadcn@latest add @pandawork/button --overwrite --yes`
   - Replace all `<CreateButton>`, `<EditButton>`, `<SaveButton>`, etc. with `<Button action="create">`, `<Button action="edit">`, `<Button action="save">`, etc.
   - Replace `<ConfirmableActionButton>` with `<AlertDialog>` wrapping `<Button action="delete">`
   - Remove all imports from `@/components/ui/action-button/*`
@@ -1288,5 +1298,5 @@ Each entry contains:
 - breaking: no
 - details: Internal refactor -- AlertDialog action/cancel buttons now use `<Button>` via `asChild` instead of applying `buttonVariants` classes directly.
 - action:
-  - Run `npx shadcn@latest add @pandahrms/alert-dialog --overwrite --yes`
+  - Run `npx shadcn@latest add @pandawork/alert-dialog --overwrite --yes`
   - No code changes required in consuming projects

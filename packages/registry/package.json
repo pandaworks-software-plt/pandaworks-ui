@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "registry:build": "shadcn build"
+    "registry:build": "shadcn build && rm -rf ../../public/r && cp -r public/r ../../public/r && rm -rf public"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",

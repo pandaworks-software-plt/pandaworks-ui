@@ -27,8 +27,15 @@
 
     "baseUrl": ".",
     "paths": {
+      "@/components/ui/*": ["../../packages/registry/registry/default/*"],
+      "@/lib/utils": ["../../packages/registry/src/lib/utils"],
+      "@/hooks/*": ["../../packages/registry/src/hooks/*"],
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "../../packages/registry/registry/default",
+    "../../packages/registry/src"
+  ]
 }
