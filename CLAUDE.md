@@ -19,7 +19,11 @@ pandawork-ui/
       components.json  # shadcn component config
   public/
     r/                 # Built registry JSON output (committed to git)
-    llms.txt           # Machine-readable component docs for AI agents
+    llms.txt           # Component index + decision guide + changelog (read this first)
+    docs/              # Detailed API docs per component/category (read on demand)
+      button.md        # Complex components get dedicated files
+      forms.md         # Simple components grouped by category
+      ...
 ```
 
 ## Commands
@@ -56,16 +60,19 @@ When committing, update both files under the `[Unreleased]` section. When cuttin
 3. Add entry to `packages/registry/registry.json` items array
 4. Run `pnpm registry:build`
 5. Add a demo page in `apps/demo/src/showcase/demos/<component>-demo.tsx`
-6. Update changelogs (`CHANGELOG.md` and the Changelog section in `public/llms.txt`)
-7. Commit everything including `public/r/` output
+6. Add API docs to the appropriate file in `public/docs/` (dedicated file for complex components, category file for simple ones)
+7. Add a catalog entry in `public/llms.txt`
+8. Update changelogs (`CHANGELOG.md` and the Changelog section in `public/llms.txt`)
+9. Commit everything including `public/r/` output
 
 ## Modifying a Component
 
 1. Edit the source file in `packages/registry/registry/default/<component>/`
 2. Run `pnpm registry:build`
 3. Verify in demo (`pnpm dev`)
-4. Update changelogs
-5. Commit both the source and the rebuilt `public/r/` output
+4. Update the component's doc file in `public/docs/` if API changed
+5. Update changelogs
+6. Commit both the source and the rebuilt `public/r/` output
 
 ## Consuming
 
