@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@source "../../../packages/registry/registry/default/**/*.tsx";
+@source "../../../packages/registry/src/**/*.ts";
 
 @custom-variant dark (&:is(.dark *));
 
