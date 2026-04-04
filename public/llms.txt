@@ -1,0 +1,1292 @@
+# Pandahrms UI Registry
+
+> Shared component registry for Pandahrms frontend projects. Built on shadcn/ui with Tailwind CSS v4, OKLCH color space, and Radix UI primitives.
+
+## Installation
+
+Install any component via the shadcn CLI:
+
+```bash
+pnpm dlx shadcn@latest add https://raw.githubusercontent.com/pandaworks-software-plt/pandahrms-ui-registry/main/public/r/<component-name>.json
+```
+
+Components are installed to `src/components/ui/`. Import from `@/components/ui/<name>`.
+
+## Tech Stack
+
+- React 19, TypeScript
+- Tailwind CSS v4 (OKLCH color space)
+- Radix UI primitives
+- class-variance-authority for variants
+- Lucide icons
+
+## Component Catalog
+
+### Layout
+
+#### AppShell
+A data-driven application layout with collapsible sidebar, header bar, and user menu.
+
+```tsx
+import { AppShell } from "@/components/ui/app-shell"
+import { Users, LayoutDashboard, LogOut } from "lucide-react"
+
+<AppShell
+  branding={{ name: "MyApp", logo: "/logo.png", href: "/" }}
+  navigation={[
+    { label: "Dashboard", href: "/", icon: LayoutDashboard },
+    { label: "Users", href: "/users", icon: Users, active: true },
+    {
+      label: "Settings",
+      href: "#",
+      icon: Settings,
+      items: [
+        { label: "General", href: "/settings/general" },
+        { label: "Security", href: "/settings/security" },
+      ],
+    },
+  ]}
+  user={{
+    name: "Ahmad Razif",
+    email: "ahmad@company.com",
+    avatar: "/avatar.jpg",
+    actions: [
+      { label: "Profile", href: "/profile", icon: User },
+      { label: "Sign Out", onClick: handleSignOut, icon: LogOut, variant: "destructive" },
+    ],
+  }}
+  header={<Breadcrumbs />}
+  navbarActions={<NotificationBell />}
+>
+  {children}
+</AppShell>
+```
+
+Props:
+- `branding: { name: string; logo?: string; href?: string }` -- App branding in sidebar header
+- `navigation: NavItem[]` -- Sidebar nav items. Each: `{ label, href, icon?, active?, items?: NavItem[] }`
+- `user?: { name, email?, avatar?, actions?: UserAction[] }` -- User menu in sidebar footer
+- `header?: ReactNode` -- Content next to sidebar trigger in the top bar
+- `navbarActions?: ReactNode` -- Right-aligned actions in the top bar (search, notifications)
+- `children: ReactNode` -- Main content area
+
+Dependencies: sidebar, button, separator, sheet, tooltip, dropdown-menu, collapsible, avatar
+
+#### PageHeader
+A page header with title, description, and action buttons.
+
+```tsx
+import { PageHeader } from "@/components/ui/page-header"
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+
+<PageHeader
+  title="Employees"
+  description="Manage your team members."
+  actions={
+    <Button><Plus /> Add Employee</Button>
+  }
+/>
+```
+
+Props:
+- `title: string`
+- `description?: string`
+- `actions?: ReactNode`
+
+#### DetailPage
+A compound layout for resource detail pages with header, 2-column grid, sidebar, and copyable meta items.
+
+```tsx
+import {
+  DetailPage, DetailPageHeader, DetailPageMain,
+  DetailPageContent, DetailPageSidebar, DetailPageMetaItem,
+} from "@/components/ui/detail-page"
+
+<DetailPage>
+  <DetailPageHeader
+    title="Ahmad Razif"
+    subtitle="Software Engineer"
+    icon={<Avatar />}
+    backHref="/employees"
+    backLabel="Employees"
+    actions={<Button>Edit</Button>}
+  />
+  <DetailPageMain>
+    <DetailPageContent>
+      {/* Main content cards */}
+    </DetailPageContent>
+    <DetailPageSidebar>
+      <DetailPageMetaItem label="Employee ID" value="EMP-001" copyable />
+      <DetailPageMetaItem label="Department" value="Engineering" />
+    </DetailPageSidebar>
+  </DetailPageMain>
+</DetailPage>
+```
+
+#### Modal
+An opinionated modal built on Dialog with sticky header, scrollable body, and sticky footer. Use for form modals and complex content that may overflow.
+
+```tsx
+import {
+  Modal, ModalTrigger, ModalClose, ModalContent,
+  ModalHeader, ModalBody, ModalFooter,
+} from "@/components/ui/modal"
+
+<Modal>
+  <ModalTrigger asChild>
+    <Button>Open Modal</Button>
+  </ModalTrigger>
+  <ModalContent>
+    <ModalHeader title="Edit Employee" description="Update employee details." />
+    <ModalBody>
+      {/* Scrollable content */}
+    </ModalBody>
+    <ModalFooter>
+      <ModalClose asChild><Button variant="outline">Cancel</Button></ModalClose>
+      <Button>Save</Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+```
+
+ModalHeader props:
+- `title: string` -- Header title
+- `description?: string` -- Optional description below title
+- `showCloseButton?: boolean` -- Show X close button (default: true)
+
+Dependencies: dialog
+
+### Forms
+
+#### Button
+A button with action presets, icon support, auto-tooltips, and loading state. Replaces the old `ActionButton` component.
+
+Variants: `default`, `brand`, `secondary`, `outline`, `destructive`, `ghost`, `link`
+Sizes: `default`, `sm`, `lg`, `icon`, `icon-sm`, `icon-lg`
+
+Props:
+- `variant` -- Visual style variant
+- `size` -- Size of the button
+- `asChild` -- Render as child element (Radix Slot)
+- `action` -- Action preset that auto-resolves icon, variant, and label (see table below)
+- `icon` -- Custom icon override (any Lucide icon or ElementType). Overrides the action preset icon
+- `tooltip` -- Tooltip text. Auto-shown for icon-only sizes; falls back to preset label
+- `loading` -- Shows a Loader2 spinner, disables the button
+
+Action presets (use `action` prop instead of manually setting icon + variant):
+
+| Action | Icon | Default Variant | Auto-Label |
+|--------|------|-----------------|------------|
+| `create` | Plus | brand | Create |
+| `edit` | Pencil | outline | Edit |
+| `save` | Save | brand | Save |
+| `delete` | Trash2 | destructive | Delete |
+| `cancel` | X | outline | Cancel |
+| `view` | Eye | ghost | View |
+| `export` | Download | outline | Export |
+| `import` | Upload | outline | Import |
+| `archive` | Archive | secondary | Archive |
+| `duplicate` | Copy | outline | Duplicate |
+| `print` | Printer | outline | Print |
+| `link` | ExternalLink | ghost | Link |
+
+Resolution order:
+- **Variant**: explicit `variant` prop > action preset variant > `"default"`
+- **Icon**: `loading` spinner > explicit `icon` prop > action preset icon > none
+- **Children**: explicit children > action preset label (only for non-icon sizes)
+
+```tsx
+import { Button } from "@/components/ui/button"
+
+// Action preset (auto icon + variant + label)
+<Button action="create" onClick={handleCreate} />
+
+// Icon-only with auto-tooltip
+<Button action="edit" size="icon" onClick={handleEdit} />
+
+// Custom icon on a preset
+<Button action="create" icon={FilePlus}>New Template</Button>
+
+// Override variant
+<Button action="delete" variant="outline">Remove</Button>
+
+// Loading state
+<Button action="save" loading={isSaving} onClick={handleSave} />
+
+// Standalone icon + tooltip (no action preset)
+<Button icon={Settings} size="icon" tooltip="Settings" />
+
+// Plain usage (no preset)
+<Button variant="outline" size="sm">Cancel</Button>
+```
+
+Confirmation dialogs: Button does not include built-in confirmation. Wrap with `AlertDialog` for destructive actions:
+
+```tsx
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button action="delete" />
+  </AlertDialogTrigger>
+  {/* AlertDialogContent... */}
+</AlertDialog>
+```
+
+Dependencies: tooltip
+
+#### SearchInput
+A search input with icon, optional clear button, and built-in debounce for filtering lists.
+
+```tsx
+import { SearchInput } from "@/components/ui/search-input"
+
+<SearchInput
+  value={query}
+  onChange={setQuery}
+  onSearch={handleDebouncedSearch}
+  onClear={() => setQuery("")}
+  placeholder="Search employees..."
+  debounce={300}
+/>
+```
+
+Props:
+- `debounce?: number` -- Debounce delay in ms (default: 300)
+- `onSearch?: (value: string) => void` -- Fires with the debounced value
+- `onChange?: (value: string) => void` -- Fires immediately on every keystroke
+- `onClear?: () => void` -- Shows a clear (X) button when provided and value is non-empty
+- `value?: string` -- Controlled value
+- `placeholder?: string` -- Placeholder text (default: "Search...")
+
+Dependencies: input
+
+#### Input
+Standard HTML input with consistent styling.
+
+```tsx
+import { Input } from "@/components/ui/input"
+
+<Input type="email" placeholder="name@example.com" />
+```
+
+#### Label
+Accessible label for form controls.
+
+```tsx
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+
+<Label htmlFor="email">Email</Label>
+<Input id="email" type="email" />
+```
+
+#### Textarea
+Multi-line text input.
+
+```tsx
+import { Textarea } from "@/components/ui/textarea"
+
+<Textarea placeholder="Enter description..." />
+```
+
+#### Checkbox
+Checkbox with checked, unchecked, and indeterminate states.
+
+```tsx
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+
+<div className="flex items-center gap-2">
+  <Checkbox id="terms" />
+  <Label htmlFor="terms">Accept terms</Label>
+</div>
+```
+
+#### RadioGroup
+Mutually exclusive radio options.
+
+```tsx
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
+
+<RadioGroup defaultValue="option-1">
+  <div className="flex items-center gap-2">
+    <RadioGroupItem value="option-1" id="r1" />
+    <Label htmlFor="r1">Option 1</Label>
+  </div>
+  <div className="flex items-center gap-2">
+    <RadioGroupItem value="option-2" id="r2" />
+    <Label htmlFor="r2">Option 2</Label>
+  </div>
+</RadioGroup>
+```
+
+#### Switch
+Toggle switch for boolean on/off states.
+
+```tsx
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+
+<div className="flex items-center gap-2">
+  <Switch id="notifications" />
+  <Label htmlFor="notifications">Enable notifications</Label>
+</div>
+```
+
+#### Select
+Dropdown select built on Radix UI. Use for short, static option lists.
+
+```tsx
+import {
+  Select, SelectContent, SelectItem,
+  SelectTrigger, SelectValue,
+} from "@/components/ui/select"
+
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select department..." />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="engineering">Engineering</SelectItem>
+    <SelectItem value="hr">Human Resources</SelectItem>
+    <SelectItem value="finance">Finance</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+#### SelectPicker
+Searchable select with single/multiple mode. Use for long option lists or when search filtering is needed. Discriminated union props based on `mode`.
+
+```tsx
+import { SelectPicker } from "@/components/ui/select-picker"
+
+// Single select
+<SelectPicker
+  mode="single"
+  value={country}
+  onChange={setCountry}
+  placeholder="Select country..."
+  searchPlaceholder="Search countries..."
+  options={[
+    { value: "my", label: "Malaysia" },
+    { value: "sg", label: "Singapore" },
+  ]}
+/>
+
+// Multiple select
+<SelectPicker
+  mode="multiple"
+  value={skills}
+  onChange={setSkills}
+  placeholder="Select skills..."
+  options={[
+    { value: "react", label: "React" },
+    { value: "typescript", label: "TypeScript" },
+  ]}
+/>
+```
+
+Props:
+- `mode: "single" | "multiple"` -- Determines value/onChange types
+- Single: `value: string`, `onChange: (value: string) => void`
+- Multiple: `value: string[]`, `onChange: (value: string[]) => void`
+- `options: { value: string; label: string }[]`
+- `placeholder?: string`
+- `searchPlaceholder?: string`
+- `emptyMessage?: string`
+- `disabled?: boolean`
+
+When to use SelectPicker vs Select:
+- Select: < 10 static options, no search needed
+- SelectPicker: > 10 options, needs search, or multiple selection
+
+#### DatePicker
+Single date picker with calendar popover.
+
+```tsx
+import { DatePicker } from "@/components/ui/date-picker"
+
+<DatePicker
+  selected={date}
+  onChange={setDate}
+  placeholder="Select date..."
+/>
+```
+
+Props:
+- `selected?: Date | null`
+- `onChange?: (date: Date | null) => void`
+- `placeholder?: string`
+- `disabled?: boolean`
+
+#### DateRangePicker
+Dual date picker with quick-select presets for date ranges.
+
+```tsx
+import { DateRangePicker } from "@/components/ui/date-range-picker"
+
+<DateRangePicker
+  startDate={start}
+  endDate={end}
+  onChange={([start, end]) => { setStart(start); setEnd(end); }}
+  placeholder={{ start: "Start date", end: "End date" }}
+/>
+```
+
+Props:
+- `startDate: Date | undefined`
+- `endDate: Date | undefined`
+- `onChange: (dates: [Date | null, Date | null]) => void`
+- `placeholder?: { start?: string; end?: string }`
+- `minDate?: Date`, `maxDate?: Date`
+
+#### Slider
+Range slider with single/dual thumb support.
+
+```tsx
+import { Slider } from "@/components/ui/slider"
+
+<Slider defaultValue={[50]} max={100} step={1} />
+```
+
+#### Form
+Form components with react-hook-form integration, field context, validation, and accessible labels.
+
+```tsx
+import { useForm } from "react-hook-form"
+import {
+  Form, FormField, FormItem,
+  FormLabel, FormControl, FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+
+const form = useForm({ defaultValues: { name: "" } })
+
+<Form {...form}>
+  <form onSubmit={form.handleSubmit(onSubmit)}>
+    <FormField
+      control={form.control}
+      name="name"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Name</FormLabel>
+          <FormControl>
+            <Input {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  </form>
+</Form>
+```
+
+#### SplitButton
+Compound button with primary action and dropdown for secondary actions.
+
+```tsx
+import {
+  SplitButton, SplitButtonAction,
+  SplitButtonMenu, SplitButtonMenuItem,
+} from "@/components/ui/split-button"
+
+<SplitButton variant="default">
+  <SplitButtonAction onClick={handleSave}>Save</SplitButtonAction>
+  <SplitButtonMenu>
+    <SplitButtonMenuItem onClick={handleSaveDraft}>Save as Draft</SplitButtonMenuItem>
+    <SplitButtonMenuItem onClick={handlePublish}>Save and Publish</SplitButtonMenuItem>
+  </SplitButtonMenu>
+</SplitButton>
+```
+
+Variants: `default`, `secondary`, `outline`, `destructive`, `ghost`
+Sizes: `sm`, `default`, `lg`
+
+#### AttachmentInput
+File attachment input with dropzone/compact variants, single/multiple modes.
+
+```tsx
+import { AttachmentInput } from "@/components/ui/attachment-input"
+
+// Single file dropzone
+<AttachmentInput
+  mode="single"
+  variant="dropzone"
+  value={file}
+  onChange={setFile}
+  accept="image/*,.pdf"
+  maxSize={5 * 1024 * 1024}
+/>
+
+// Multiple files compact
+<AttachmentInput
+  mode="multiple"
+  variant="compact"
+  value={files}
+  onChange={setFiles}
+  maxFiles={5}
+/>
+```
+
+Props:
+- `mode: "single" | "multiple"`
+- `variant?: "dropzone" | "compact"` (default: "dropzone")
+- Single: `value: AttachmentFile | null`, `onChange: (file: AttachmentFile | null) => void`
+- Multiple: `value: AttachmentFile[]`, `onChange: (files: AttachmentFile[]) => void`, `maxFiles?: number`
+- `accept?: string` -- File type filter (e.g., "image/*,.pdf")
+- `maxSize?: number` -- Max file size in bytes
+
+#### SelectableCard
+Composable card for single (radio) or multi (checkbox) selection.
+
+```tsx
+import {
+  SelectableCardGroup, SelectableCard,
+  SelectableCardTitle, SelectableCardDescription,
+} from "@/components/ui/selectable-card"
+
+// Single select (radio)
+<SelectableCardGroup type="single" value={plan} onValueChange={setPlan}>
+  <SelectableCard value="basic">
+    <SelectableCardTitle>Basic</SelectableCardTitle>
+    <SelectableCardDescription>For individuals</SelectableCardDescription>
+  </SelectableCard>
+  <SelectableCard value="pro">
+    <SelectableCardTitle>Pro</SelectableCardTitle>
+    <SelectableCardDescription>For teams</SelectableCardDescription>
+  </SelectableCard>
+</SelectableCardGroup>
+```
+
+Sizes: `sm`, `default`, `lg`
+
+#### FilterBar
+Two composable filter components: FilterButton (trigger) and ActiveFilters (chips display).
+
+```tsx
+import { FilterButton, ActiveFilters } from "@/components/ui/filter-bar"
+
+const fields = [
+  {
+    type: "option", key: "status", label: "Status",
+    options: [
+      { value: "active", label: "Active" },
+      { value: "inactive", label: "Inactive" },
+    ],
+    multiple: true,
+  },
+  {
+    type: "date", key: "joinDate", label: "Join Date",
+  },
+  {
+    type: "text", key: "name", label: "Name",
+    placeholder: "Search by name...",
+  },
+]
+
+const [filters, setFilters] = useState([])
+const activeKeys = new Set(filters.map(f => f.key))
+
+<div className="flex items-center gap-2">
+  <FilterButton
+    fields={fields}
+    activeKeys={activeKeys}
+    onAdd={(key) => setFilters([...filters, { key, type: "pending" }])}
+  />
+  <ActiveFilters
+    fields={fields}
+    filters={filters}
+    onChange={setFilters}
+  />
+</div>
+```
+
+Filter field types: `option`, `date`, `date-range`, `text`
+Filter operators: `is`, `before`, `after` (date), `between` (date-range), `contains`, `equals`, `starts_with` (text)
+
+### Data Display
+
+#### Badge
+Variants: `default`, `secondary`, `destructive`, `outline`
+
+```tsx
+import { Badge } from "@/components/ui/badge"
+
+<Badge>Active</Badge>
+<Badge variant="secondary">Pending</Badge>
+<Badge variant="destructive">Rejected</Badge>
+<Badge variant="outline">Draft</Badge>
+```
+
+#### Avatar
+
+```tsx
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
+<Avatar>
+  <AvatarImage src="/avatar.jpg" alt="User" />
+  <AvatarFallback>AR</AvatarFallback>
+</Avatar>
+```
+
+#### Card
+
+```tsx
+import {
+  Card, CardHeader, CardTitle,
+  CardDescription, CardContent, CardFooter,
+} from "@/components/ui/card"
+
+<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+    <CardDescription>Description</CardDescription>
+  </CardHeader>
+  <CardContent>Content here</CardContent>
+  <CardFooter>Footer actions</CardFooter>
+</Card>
+```
+
+#### Table
+
+```tsx
+import {
+  Table, TableHeader, TableBody,
+  TableRow, TableHead, TableCell,
+} from "@/components/ui/table"
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Status</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Ahmad</TableCell>
+      <TableCell>Active</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+#### Calendar
+
+```tsx
+import { Calendar } from "@/components/ui/calendar"
+
+<Calendar mode="single" selected={date} onSelect={setDate} />
+```
+
+#### Skeleton
+
+```tsx
+import { Skeleton } from "@/components/ui/skeleton"
+
+<Skeleton className="h-4 w-[200px]" />
+<Skeleton className="h-12 w-12 rounded-full" />
+```
+
+#### Progress
+
+```tsx
+import { Progress } from "@/components/ui/progress"
+
+<Progress value={60} />
+```
+
+#### CodeLabel
+Inline monospace label with copy-to-clipboard button.
+
+```tsx
+import { CodeLabel } from "@/components/ui/code-label"
+
+<CodeLabel value="EMP-2024-001" />
+<CodeLabel value="npm install" size="sm" />
+```
+
+Sizes: `default`, `sm`
+
+#### AnimatedNumber
+A number display that animates smoothly between values using requestAnimationFrame with easeOutQuad easing.
+
+```tsx
+import { AnimatedNumber } from "@/components/ui/animated-number"
+
+<AnimatedNumber value={85} suffix="%" />
+<AnimatedNumber value={1234.56} prefix="RM " decimals={2} duration={800} />
+<AnimatedNumber value={count} formatter={(v) => v.toLocaleString()} />
+```
+
+Props:
+- `value: number` -- Target value to animate to
+- `duration?: number` -- Animation duration in ms (default: 500)
+- `suffix?: string` -- Text appended after the number (e.g., "%", "pts")
+- `prefix?: string` -- Text prepended before the number (e.g., "$", "RM")
+- `decimals?: number` -- Number of decimal places (default: 0)
+- `formatter?: (value: number) => string` -- Custom formatter (overrides decimals)
+
+#### ExpandableText
+A text component that collapses long content with configurable visible lines. Uses `<pre>` internally for newline support.
+
+```tsx
+import { ExpandableText } from "@/components/ui/expandable-text"
+
+<ExpandableText visibleLines={3}>
+  {longDescription}
+</ExpandableText>
+
+<ExpandableText
+  visibleLines={2}
+  showMoreLabel="Read more"
+  showLessLabel="Read less"
+>
+  {multiLineText}
+</ExpandableText>
+```
+
+Props:
+- `visibleLines?: number` -- Lines shown before collapsing (default: 3)
+- `showMoreLabel?: string` -- Expand trigger label (default: "Show more")
+- `showLessLabel?: string` -- Collapse trigger label (default: "Show less")
+
+### Feedback
+
+#### Alert
+Variants: `default`, `destructive`, `info`
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
+
+<Alert variant="destructive">
+  <AlertCircle className="h-4 w-4" />
+  <AlertTitle>Error</AlertTitle>
+  <AlertDescription>Something went wrong.</AlertDescription>
+</Alert>
+```
+
+#### AlertDialog
+Modal dialog requiring user acknowledgement.
+
+```tsx
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription,
+  AlertDialogFooter, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Delete</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+      <AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+#### LoadingPage
+A full-screen loading state with optional logo, animated dots, and customizable message.
+
+```tsx
+import { LoadingPage } from "@/components/ui/loading-page"
+
+<LoadingPage />
+<LoadingPage message="Preparing your dashboard..." />
+<LoadingPage logo={<img src="/logo.png" alt="Logo" className="h-12 w-12" />} />
+```
+
+Props:
+- `logo?: ReactNode` -- Logo or icon above the loading dots
+- `message?: string` -- Loading message text (default: "Loading...")
+
+#### ConnectionBanner
+A fixed top banner that shows when the app loses connectivity, with a retry button.
+
+```tsx
+import { ConnectionBanner } from "@/components/ui/connection-banner"
+
+<ConnectionBanner
+  isOnline={isOnline}
+  onRetry={handleRetry}
+  message="Can't connect to server"
+/>
+```
+
+Props:
+- `isOnline: boolean` -- Whether connected (renders nothing when true)
+- `onRetry: () => void | Promise<void>` -- Called on Retry click
+- `message?: string` -- Custom message (default: "Can't connect to server")
+
+Dependencies: button
+
+#### ErrorFallback
+An error boundary fallback with root (full-screen + reload) and route (inline + custom action) variants.
+
+```tsx
+import { ErrorFallback } from "@/components/ui/error-fallback"
+
+// Root-level (full-screen with Reload Page button)
+<ErrorFallback error={error} onReset={reset} variant="root" />
+
+// Route-level (inline card with custom secondary action)
+<ErrorFallback
+  error={error}
+  onReset={reset}
+  variant="route"
+  secondaryAction={<Button onClick={() => navigate("/")}>Go Home</Button>}
+  showDevDetails={process.env.NODE_ENV === "development"}
+/>
+```
+
+Props:
+- `error: unknown` -- The error object
+- `onReset: () => void` -- Called on "Try Again" click
+- `variant?: "root" | "route"` -- "root" = full-screen, "route" = inline (default: "root")
+- `title?: string` -- Error title (default: "Something went wrong")
+- `description?: string` -- Custom description text
+- `secondaryAction?: ReactNode` -- Custom secondary action button
+- `showDevDetails?: boolean` -- Show error message details (default: false)
+
+Dependencies: button, card
+
+#### Sonner (Toast)
+
+```tsx
+import { toast } from "sonner"
+import { Toaster } from "@/components/ui/sonner"
+
+// In layout:
+<Toaster />
+
+// To trigger:
+toast("Employee saved successfully")
+toast.error("Failed to save")
+toast.success("Changes applied")
+```
+
+### Overlay
+
+#### Dialog
+
+```tsx
+import {
+  Dialog, DialogClose, DialogContent,
+  DialogDescription, DialogFooter,
+  DialogHeader, DialogTitle, DialogTrigger,
+} from "@/components/ui/dialog"
+
+<Dialog>
+  <DialogTrigger asChild>
+    <Button>Open</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Title</DialogTitle>
+      <DialogDescription>Description</DialogDescription>
+    </DialogHeader>
+    {/* Content */}
+    <DialogFooter>
+      <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
+      <Button>Save</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+#### Sheet
+Slide-out panel overlay.
+
+```tsx
+import {
+  Sheet, SheetContent, SheetDescription,
+  SheetHeader, SheetTitle, SheetTrigger,
+} from "@/components/ui/sheet"
+
+<Sheet>
+  <SheetTrigger asChild>
+    <Button>Open</Button>
+  </SheetTrigger>
+  <SheetContent side="right">
+    <SheetHeader>
+      <SheetTitle>Title</SheetTitle>
+      <SheetDescription>Description</SheetDescription>
+    </SheetHeader>
+    {/* Content */}
+  </SheetContent>
+</Sheet>
+```
+
+Sides: `top`, `right`, `bottom`, `left`
+
+#### DropdownMenu
+
+```tsx
+import {
+  DropdownMenu, DropdownMenuContent,
+  DropdownMenuItem, DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="ghost" size="icon"><MoreHorizontal /></Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent align="end">
+    <DropdownMenuItem>Edit</DropdownMenuItem>
+    <DropdownMenuItem>Duplicate</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+#### Tooltip
+
+```tsx
+import {
+  Tooltip, TooltipContent,
+  TooltipProvider, TooltipTrigger,
+} from "@/components/ui/tooltip"
+
+<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button size="icon"><Info /></Button>
+    </TooltipTrigger>
+    <TooltipContent>More information</TooltipContent>
+  </Tooltip>
+</TooltipProvider>
+```
+
+#### Popover
+
+```tsx
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open</Button>
+  </PopoverTrigger>
+  <PopoverContent>Content here</PopoverContent>
+</Popover>
+```
+
+### Navigation
+
+#### Tabs
+Variants: `default` (pill-style), `line` (underline-style)
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+
+<Tabs defaultValue="general">
+  <TabsList variant="line">
+    <TabsTrigger value="general">General</TabsTrigger>
+    <TabsTrigger value="security">Security</TabsTrigger>
+  </TabsList>
+  <TabsContent value="general">General settings</TabsContent>
+  <TabsContent value="security">Security settings</TabsContent>
+</Tabs>
+```
+
+#### Accordion
+
+```tsx
+import {
+  Accordion, AccordionContent,
+  AccordionItem, AccordionTrigger,
+} from "@/components/ui/accordion"
+
+<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Section 1</AccordionTrigger>
+    <AccordionContent>Content 1</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+#### Breadcrumb
+
+```tsx
+import {
+  Breadcrumb, BreadcrumbItem, BreadcrumbLink,
+  BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem><BreadcrumbPage>Employees</BreadcrumbPage></BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+#### Collapsible
+
+```tsx
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+
+<Collapsible>
+  <CollapsibleTrigger>Toggle</CollapsibleTrigger>
+  <CollapsibleContent>Hidden content</CollapsibleContent>
+</Collapsible>
+```
+
+#### Command (Command Palette)
+
+```tsx
+import {
+  Command, CommandEmpty, CommandGroup,
+  CommandInput, CommandItem, CommandList,
+} from "@/components/ui/command"
+
+<Command>
+  <CommandInput placeholder="Search..." />
+  <CommandList>
+    <CommandEmpty>No results found.</CommandEmpty>
+    <CommandGroup heading="Actions">
+      <CommandItem>Create Employee</CommandItem>
+      <CommandItem>Generate Report</CommandItem>
+    </CommandGroup>
+  </CommandList>
+</Command>
+```
+
+#### Pagination
+
+```tsx
+import {
+  Pagination, PaginationContent, PaginationItem,
+  PaginationLink, PaginationNext, PaginationPrevious,
+} from "@/components/ui/pagination"
+
+<Pagination>
+  <PaginationContent>
+    <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
+    <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>
+    <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>
+    <PaginationItem><PaginationNext href="#" /></PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+#### ScrollArea
+
+```tsx
+import { ScrollArea } from "@/components/ui/scroll-area"
+
+<ScrollArea className="h-[200px]">
+  {/* Long content */}
+</ScrollArea>
+```
+
+#### Stepper
+A horizontal multi-step progress indicator with completed, current, and pending states. Steps can have optional descriptions and tooltip popovers.
+
+```tsx
+import { Stepper } from "@/components/ui/stepper"
+
+<Stepper
+  currentStep={1}
+  steps={[
+    { id: 1, title: "Details", description: "Basic info" },
+    { id: 2, title: "Review", description: "Check entries" },
+    { id: 3, title: "Submit" },
+  ]}
+/>
+```
+
+Props:
+- `steps: Step[]` -- Array of steps. Each: `{ id: number; title: string; description?: string; tooltip?: ReactNode }`
+- `currentStep: number` -- Zero-based index of the current step
+
+Dependencies: popover
+
+#### Separator
+
+```tsx
+import { Separator } from "@/components/ui/separator"
+
+<Separator />
+<Separator orientation="vertical" />
+```
+
+### Toggle
+
+#### Toggle
+
+```tsx
+import { Toggle } from "@/components/ui/toggle"
+import { Bold } from "lucide-react"
+
+<Toggle aria-label="Toggle bold">
+  <Bold className="h-4 w-4" />
+</Toggle>
+```
+
+#### ToggleGroup
+
+```tsx
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { Bold, Italic, Underline } from "lucide-react"
+
+<ToggleGroup type="multiple">
+  <ToggleGroupItem value="bold"><Bold /></ToggleGroupItem>
+  <ToggleGroupItem value="italic"><Italic /></ToggleGroupItem>
+  <ToggleGroupItem value="underline"><Underline /></ToggleGroupItem>
+</ToggleGroup>
+```
+
+## Decision Guide: Which Component to Use
+
+| Scenario | Component |
+|----------|-----------|
+| App-wide layout with sidebar nav | AppShell |
+| Page title + description + actions | PageHeader |
+| Detail/show page for a resource | DetailPage |
+| Form modal with sticky header/footer | Modal |
+| Short static dropdown (< 10 items) | Select |
+| Searchable dropdown, long lists | SelectPicker |
+| Multiple selection from a list | SelectPicker (mode="multiple") |
+| Pick a single date | DatePicker |
+| Pick a date range | DateRangePicker |
+| File upload with drag & drop | AttachmentInput (variant="dropzone") |
+| Inline file upload button | AttachmentInput (variant="compact") |
+| Card-based single/multi selection | SelectableCard |
+| Standard action (create/edit/delete) | Button (action prop) |
+| Primary + secondary actions | SplitButton |
+| Search/filter input with debounce | SearchInput |
+| Table filtering with chips | FilterButton + ActiveFilters |
+| Multi-step wizard progress | Stepper |
+| Animated score/metric display | AnimatedNumber |
+| Collapsible long text | ExpandableText |
+| Confirmation before destructive action | AlertDialog |
+| Form modal / side panel | Dialog or Sheet |
+| Inline monospace ID with copy | CodeLabel |
+| Toast notifications | Sonner (toast) |
+| Status indicator | Badge |
+| Loading placeholder | Skeleton |
+| Full-screen loading state | LoadingPage |
+| Offline/connectivity warning | ConnectionBanner |
+| Error boundary fallback | ErrorFallback |
+
+## Styling Conventions
+
+- Always support dark mode via `dark:` Tailwind variants
+- Use CSS variables for theme colors (defined in globals.css)
+- Color space: OKLCH
+- Base color: zinc
+- Icons: Lucide React (`lucide-react`)
+- Font: Open Sans (set in globals.css)
+
+## Changelog
+
+Machine-readable changelog for AI agents consuming this registry.
+When syncing components to downstream projects, use this section to determine what changed and what actions are required.
+
+Each entry contains:
+- **component**: the registry component name
+- **change**: what changed (added | modified | removed | renamed)
+- **action**: what consuming projects must do
+- **breaking**: whether this is a breaking change
+- **details**: concise description of the change
+
+---
+
+### [Unreleased]
+
+#### button
+
+- change: modified
+- breaking: yes
+- details: `default` variant is now standard shadcn/ui style (plain). Previous `default` (blue with inset shadows) moved to new `brand` variant.
+- action:
+  - Run `npx shadcn@latest add @pandahrms/button --overwrite --yes` to update the component
+  - Search codebase for `variant="default"` on `<Button>` -- if the intent was the blue styled button, change to `variant="brand"`
+  - Buttons with no explicit `variant` prop now render as the plain default -- verify this is acceptable or add `variant="brand"` where the blue button was expected
+  - Action presets `create` and `save` already updated to use `brand` -- no change needed if using `action="create"` or `action="save"`
+
+---
+
+### 2026-04-03
+
+#### sonner
+
+- change: modified
+- breaking: yes
+- details: Decoupled from `next-themes`. No longer imports or depends on ThemeProvider. Improved type safety and accessibility.
+- action:
+  - Run `npx shadcn@latest add @pandahrms/sonner --overwrite --yes`
+  - If your project was relying on sonner auto-detecting theme from `next-themes`, you may need to pass the `theme` prop explicitly
+
+#### all components (24 affected)
+
+- change: modified
+- breaking: no
+- details: Added `data-slot` attributes for DOM identification. Standardized double quotes. No API changes.
+- action:
+  - Run `npx shadcn@latest add @pandahrms/<component> --overwrite --yes` for each component to pick up the changes
+  - No code changes required in consuming projects
+
+#### barrel exports (19 components)
+
+- change: added
+- breaking: no
+- details: Added `index.ts` barrel exports for avatar, badge, button, calendar, card, checkbox, collapsible, command, dialog, dropdown-menu, input, label, popover, separator, sheet, sidebar, toggle, tooltip, app-shell-types.
+- action:
+  - No action required. Consuming projects can optionally update imports to use barrel exports
+
+#### useCopyToClipboard
+
+- change: added
+- breaking: no
+- details: New hook in `src/hooks/use-copy-to-clipboard.ts`. Copies text to clipboard with a reset timer.
+- action:
+  - Available for use in consuming projects. No action required unless you want to use it.
+
+---
+
+### 2026-03-31
+
+#### button
+
+- change: modified
+- breaking: no
+- details: Added `action` prop with 12 presets (create, edit, save, delete, cancel, view, export, import, archive, duplicate, print, link). Added `icon`, `tooltip`, and `loading` props. Auto-resolves icon, variant, label, and tooltip from action presets.
+- action:
+  - Run `npx shadcn@latest add @pandahrms/button --overwrite --yes`
+  - Replace all `<CreateButton>`, `<EditButton>`, `<SaveButton>`, etc. with `<Button action="create">`, `<Button action="edit">`, `<Button action="save">`, etc.
+  - Replace `<ConfirmableActionButton>` with `<AlertDialog>` wrapping `<Button action="delete">`
+  - Remove all imports from `@/components/ui/action-button/*`
+
+#### action-button
+
+- change: removed
+- breaking: yes
+- details: Entire component removed (15 files). All functionality consolidated into Button `action` prop.
+- action:
+  - Delete `@/components/ui/action-button/` directory from consuming projects
+  - Remove `action-button` from `components.json` if present
+  - See button entry above for migration steps
+
+#### alert-dialog
+
+- change: modified
+- breaking: no
+- details: Internal refactor -- AlertDialog action/cancel buttons now use `<Button>` via `asChild` instead of applying `buttonVariants` classes directly.
+- action:
+  - Run `npx shadcn@latest add @pandahrms/alert-dialog --overwrite --yes`
+  - No code changes required in consuming projects

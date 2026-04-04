@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "page-header",
+  "title": "Page Header",
+  "description": "A page header with title, description, and action buttons slot for consistent page layouts.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/default/page-header/page-header.tsx",
+      "content": "import type { ReactNode } from \"react\";\n\ninterface PageHeaderProps {\n  title: string;\n  description?: string;\n  actions?: ReactNode;\n}\n\nfunction PageHeader({ title, description, actions }: PageHeaderProps) {\n  return (\n    <div data-slot=\"page-header\" className=\"flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between\">\n      <div className=\"space-y-1\">\n        <h1 className=\"text-lg font-semibold tracking-tight\">{title}</h1>\n        {description && (\n          <p className=\"text-sm text-muted-foreground\">{description}</p>\n        )}\n      </div>\n      {actions && (\n        <div className=\"flex items-center gap-2 shrink-0\">{actions}</div>\n      )}\n    </div>\n  );\n}\n\nexport { PageHeader };\nexport type { PageHeaderProps };\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

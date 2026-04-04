@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "code-label",
+  "title": "Code Label",
+  "description": "An inline monospace label with a copy-to-clipboard button, useful for displaying IDs, commands, and code snippets.",
+  "dependencies": [
+    "lucide-react",
+    "class-variance-authority",
+    "sonner"
+  ],
+  "registryDependencies": [
+    "sonner"
+  ],
+  "files": [
+    {
+      "path": "registry/default/code-label/code-label.tsx",
+      "content": "import { forwardRef, type HTMLAttributes, type MouseEvent } from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { Copy, Check } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { useCopyToClipboard } from \"@/hooks/use-copy-to-clipboard\"\n\nconst codeLabelVariants = cva(\n  \"inline-flex items-center gap-2 rounded-md border font-mono bg-muted/50 text-foreground dark:bg-muted/20\",\n  {\n    variants: {\n      size: {\n        default: \"px-3 py-1.5 text-sm\",\n        sm: \"px-2 py-1 text-xs\",\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n    },\n  }\n)\n\nexport interface CodeLabelProps\n  extends Omit<HTMLAttributes<HTMLDivElement>, \"children\">,\n    VariantProps<typeof codeLabelVariants> {\n  value: string\n}\n\nconst CodeLabel = forwardRef<HTMLDivElement, CodeLabelProps>(\n  ({ className, size, value, ...props }, ref) => {\n    const { copied, copy } = useCopyToClipboard()\n\n    const handleCopy = async (e: MouseEvent) => {\n      e.stopPropagation()\n      await copy(value)\n    }\n\n    return (\n      <div\n        data-slot=\"code-label\"\n        ref={ref}\n        className={cn(codeLabelVariants({ size }), className)}\n        {...props}\n      >\n        <span className=\"min-w-0 truncate\">{value}</span>\n        <button\n          type=\"button\"\n          onClick={handleCopy}\n          className=\"inline-flex shrink-0 items-center justify-center rounded text-muted-foreground transition-colors hover:text-foreground\"\n          aria-label=\"Copy to clipboard\"\n        >\n          {copied ? (\n            <Check className=\"size-3.5\" />\n          ) : (\n            <Copy className=\"size-3.5\" />\n          )}\n        </button>\n      </div>\n    )\n  }\n)\nCodeLabel.displayName = \"CodeLabel\"\n\nexport { CodeLabel, codeLabelVariants }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

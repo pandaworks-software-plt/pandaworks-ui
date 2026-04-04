@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "expandable-text",
+  "title": "Expandable Text",
+  "description": "A text component that collapses long content with configurable visible lines, using pre for newline support.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/default/expandable-text/expandable-text.tsx",
+      "content": "import { forwardRef, useRef, useState, useEffect, type HTMLAttributes } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface ExpandableTextProps\n  extends HTMLAttributes<HTMLDivElement> {\n  /** Number of visible lines before collapsing. Default: 3 */\n  visibleLines?: number\n  /** Label for expand trigger. Default: \"Show more\" */\n  showMoreLabel?: string\n  /** Label for collapse trigger. Default: \"Show less\" */\n  showLessLabel?: string\n}\n\nconst ExpandableText = forwardRef<HTMLDivElement, ExpandableTextProps>(\n  (\n    {\n      className,\n      children,\n      visibleLines = 3,\n      showMoreLabel = \"Show more\",\n      showLessLabel = \"Show less\",\n      ...props\n    },\n    ref\n  ) => {\n    const contentRef = useRef<HTMLPreElement>(null)\n    const [expanded, setExpanded] = useState(false)\n    const [isOverflowing, setIsOverflowing] = useState(false)\n\n    useEffect(() => {\n      const el = contentRef.current\n      if (!el || expanded) return\n\n      const check = () => {\n        setIsOverflowing(el.scrollHeight > el.clientHeight)\n      }\n\n      check()\n\n      const observer = new ResizeObserver(check)\n      observer.observe(el)\n      return () => observer.disconnect()\n    }, [children, visibleLines, expanded])\n\n    return (\n      <div ref={ref} className={cn(\"relative\", className)} {...props}>\n        <pre\n          ref={contentRef}\n          className={cn(\n            \"whitespace-pre-wrap break-words font-sans text-sm text-foreground\",\n            !expanded && \"overflow-hidden\"\n          )}\n          style={\n            !expanded\n              ? {\n                  display: \"-webkit-box\",\n                  WebkitLineClamp: visibleLines,\n                  WebkitBoxOrient: \"vertical\" as const,\n                }\n              : undefined\n          }\n        >\n          {children}\n        </pre>\n        {isOverflowing && (\n          <button\n            type=\"button\"\n            onClick={() => setExpanded((prev) => !prev)}\n            className=\"mt-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground\"\n          >\n            {expanded ? showLessLabel : showMoreLabel}\n          </button>\n        )}\n      </div>\n    )\n  }\n)\nExpandableText.displayName = \"ExpandableText\"\n\nexport { ExpandableText }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

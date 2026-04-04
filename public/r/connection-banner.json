@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "connection-banner",
+  "title": "Connection Banner",
+  "description": "A fixed top banner that shows when the app loses connectivity, with a retry button.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "registry/default/connection-banner/connection-banner.tsx",
+      "content": "import { useState } from \"react\";\nimport { WifiOff } from \"lucide-react\";\nimport { cn } from \"@/lib/utils\";\nimport { Button } from \"@/components/ui/button\";\n\ninterface ConnectionBannerProps {\n  /** Whether the connection is currently online */\n  isOnline: boolean;\n  /** Called when the user clicks Retry */\n  onRetry: () => void | Promise<void>;\n  /** Custom message */\n  message?: string;\n  /** Additional className */\n  className?: string;\n}\n\nfunction ConnectionBanner({\n  isOnline,\n  onRetry,\n  message = \"Can't connect to server\",\n  className,\n}: ConnectionBannerProps) {\n  const [isRetrying, setIsRetrying] = useState(false);\n\n  if (isOnline) return null;\n\n  const handleRetry = async () => {\n    setIsRetrying(true);\n    try {\n      await onRetry();\n    } finally {\n      setIsRetrying(false);\n    }\n  };\n\n  return (\n    <div\n      role=\"alert\"\n      aria-live=\"assertive\"\n      className={cn(\n        \"fixed left-0 right-0 top-0 z-50 flex h-14 items-center justify-between bg-destructive px-4 text-destructive-foreground shadow-md transition-transform duration-300\",\n        className\n      )}\n    >\n      <div className=\"flex items-center gap-3\">\n        <WifiOff className=\"h-5 w-5\" />\n        <span className=\"font-medium\">{message}</span>\n      </div>\n      <Button\n        variant=\"secondary\"\n        size=\"sm\"\n        onClick={handleRetry}\n        disabled={isRetrying}\n        className=\"bg-white text-destructive hover:bg-white/90 dark:bg-gray-100 dark:text-destructive dark:hover:bg-gray-200\"\n      >\n        {isRetrying ? \"Retrying...\" : \"Retry\"}\n      </Button>\n    </div>\n  );\n}\n\nexport { ConnectionBanner, type ConnectionBannerProps };\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

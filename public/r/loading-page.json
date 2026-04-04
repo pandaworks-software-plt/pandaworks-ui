@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "loading-page",
+  "title": "Loading Page",
+  "description": "A full-screen loading state with optional logo, animated dots, and customizable message.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/default/loading-page/loading-page.tsx",
+      "content": "import type { ReactNode } from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\ninterface LoadingPageProps {\n  /** Logo or icon to display above the loading dots */\n  logo?: ReactNode;\n  /** Loading message text */\n  message?: string;\n  /** Additional className for the container */\n  className?: string;\n}\n\nfunction LoadingPage({\n  logo,\n  message = \"Loading...\",\n  className,\n}: LoadingPageProps) {\n  return (\n    <div\n      data-slot=\"loading-page\"\n      className={cn(\n        \"flex h-full w-full flex-col items-center justify-center gap-6\",\n        className\n      )}\n    >\n      {logo && (\n        <div className=\"relative\">\n          {logo}\n          <div className=\"absolute inset-0 animate-pulse rounded-lg bg-primary/20\" />\n        </div>\n      )}\n      <div className=\"flex flex-col items-center gap-3\">\n        <div className=\"flex space-x-1\">\n          <div\n            className=\"h-2 w-2 animate-bounce rounded-full bg-primary\"\n            style={{ animationDelay: \"0ms\" }}\n          />\n          <div\n            className=\"h-2 w-2 animate-bounce rounded-full bg-primary\"\n            style={{ animationDelay: \"150ms\" }}\n          />\n          <div\n            className=\"h-2 w-2 animate-bounce rounded-full bg-primary\"\n            style={{ animationDelay: \"300ms\" }}\n          />\n        </div>\n        <p className=\"text-sm text-muted-foreground\">{message}</p>\n      </div>\n    </div>\n  );\n}\n\nexport { LoadingPage, type LoadingPageProps };\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "search-input",
+  "title": "Search Input",
+  "description": "A search input with icon, optional clear button, and built-in debounce for filtering lists.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "input"
+  ],
+  "files": [
+    {
+      "path": "registry/default/search-input/search-input.tsx",
+      "content": "import { useEffect, useState, type ChangeEvent, type ComponentProps } from \"react\"\nimport { Search, X } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { Input } from \"@/components/ui/input\"\n\ninterface SearchInputProps\n  extends Omit<ComponentProps<\"input\">, \"type\" | \"onChange\"> {\n  /** Debounce delay in ms. Default: 300 */\n  debounce?: number\n  /** Fires with the debounced value */\n  onSearch?: (value: string) => void\n  /** Fires immediately on every keystroke with the new value */\n  onChange?: (value: string) => void\n  /** Shows a clear (X) button when provided and value is non-empty */\n  onClear?: () => void\n}\n\nfunction SearchInput({\n  className,\n  debounce = 300,\n  value: controlledValue,\n  onSearch,\n  onChange,\n  onClear,\n  placeholder = \"Search...\",\n  ...props\n}: SearchInputProps) {\n  const [internal, setInternal] = useState(\n    () => (controlledValue as string) ?? \"\"\n  )\n\n  // Sync internal state when controlled value changes externally\n  useEffect(() => {\n    if (controlledValue !== undefined) {\n      setInternal(controlledValue as string)\n    }\n  }, [controlledValue])\n\n  // Debounced onSearch callback\n  useEffect(() => {\n    if (!onSearch) return\n\n    const timer = setTimeout(() => {\n      onSearch(internal)\n    }, debounce)\n\n    return () => clearTimeout(timer)\n  }, [internal, debounce, onSearch])\n\n  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {\n    const next = e.target.value\n    setInternal(next)\n    onChange?.(next)\n  }\n\n  const handleClear = () => {\n    setInternal(\"\")\n    onChange?.(\"\")\n    onSearch?.(\"\")\n    onClear?.()\n  }\n\n  const showClear = onClear && internal.length > 0\n\n  return (\n    <div data-slot=\"search-input\" className={cn(\"relative\", className)}>\n      <Search className=\"pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground\" />\n      <Input\n        {...props}\n        type=\"text\"\n        placeholder={placeholder}\n        value={internal}\n        onChange={handleChange}\n        className={cn(\"pl-8\", showClear && \"pr-8\")}\n      />\n      {showClear && (\n        <button\n          type=\"button\"\n          onClick={handleClear}\n          className=\"absolute right-2 top-1/2 -translate-y-1/2 rounded-sm p-0.5 text-muted-foreground hover:text-foreground transition-colors\"\n          aria-label=\"Clear search\"\n        >\n          <X className=\"h-3.5 w-3.5\" />\n        </button>\n      )}\n    </div>\n  )\n}\n\nexport { SearchInput, type SearchInputProps }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

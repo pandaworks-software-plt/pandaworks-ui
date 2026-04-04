@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "error-fallback",
+  "title": "Error Fallback",
+  "description": "An error boundary fallback with root (full-screen + reload) and route (inline + custom action) variants.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "card"
+  ],
+  "files": [
+    {
+      "path": "registry/default/error-fallback/error-fallback.tsx",
+      "content": "import { AlertCircle, RefreshCcw, RotateCcw } from \"lucide-react\";\nimport { cn } from \"@/lib/utils\";\nimport { Button } from \"@/components/ui/button\";\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardHeader,\n  CardTitle,\n} from \"@/components/ui/card\";\n\ninterface ErrorFallbackProps {\n  /** The error object */\n  error: unknown;\n  /** Called when user clicks \"Try Again\" */\n  onReset: () => void;\n  /** Variant: \"root\" = full-screen with reload, \"route\" = inline with custom secondary */\n  variant?: \"root\" | \"route\";\n  /** Title text */\n  title?: string;\n  /** Description text */\n  description?: string;\n  /** Custom action button (replaces the secondary action: Reload/Go Home) */\n  secondaryAction?: React.ReactNode;\n  /** Show error details (e.g., in dev mode) */\n  showDevDetails?: boolean;\n  /** Additional className */\n  className?: string;\n}\n\nfunction ErrorFallback({\n  error,\n  onReset,\n  variant = \"root\",\n  title = \"Something went wrong\",\n  description,\n  secondaryAction,\n  showDevDetails = false,\n  className,\n}: ErrorFallbackProps) {\n  const errorMessage =\n    error instanceof Error ? error.message : \"An unknown error occurred\";\n\n  const defaultDescription =\n    description ??\n    (variant === \"root\"\n      ? \"The application encountered an unexpected error. Please reload the page or try again.\"\n      : \"This section encountered an error. Please try again or navigate away.\");\n\n  const defaultSecondaryAction =\n    !secondaryAction && variant === \"root\" ? (\n      <Button\n        onClick={() => window.location.reload()}\n        variant=\"default\"\n        className=\"flex-1\"\n      >\n        <RotateCcw className=\"mr-2 h-4 w-4\" /> Reload Page\n      </Button>\n    ) : null;\n\n  return (\n    <div\n      data-slot=\"error-fallback\"\n      className={cn(\n        \"flex items-center justify-center p-4\",\n        variant === \"root\" ? \"min-h-screen bg-background\" : \"min-h-[400px]\",\n        className\n      )}\n    >\n      <Card className=\"w-full max-w-lg border-red-200 dark:border-red-800\">\n        <CardHeader>\n          <div className=\"flex items-center gap-2\">\n            <AlertCircle className=\"h-5 w-5 text-red-600 dark:text-red-400\" />\n            <CardTitle className=\"text-red-900 dark:text-red-100\">\n              {title}\n            </CardTitle>\n          </div>\n          <CardDescription className=\"text-red-700 dark:text-red-300\">\n            {defaultDescription}\n          </CardDescription>\n        </CardHeader>\n        <CardContent className=\"space-y-4\">\n          {showDevDetails && (\n            <div className=\"rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-950/30\">\n              <p className=\"break-all font-mono text-sm text-red-900 dark:text-red-100\">\n                {errorMessage}\n              </p>\n            </div>\n          )}\n          <div className=\"flex gap-2\">\n            <Button onClick={onReset} variant=\"outline\" className=\"flex-1\">\n              <RefreshCcw className=\"mr-2 h-4 w-4\" /> Try Again\n            </Button>\n            {secondaryAction ?? defaultSecondaryAction}\n          </div>\n        </CardContent>\n      </Card>\n    </div>\n  );\n}\n\nexport { ErrorFallback, type ErrorFallbackProps };\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

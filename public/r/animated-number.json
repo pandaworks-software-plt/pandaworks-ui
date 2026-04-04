@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "animated-number",
+  "title": "Animated Number",
+  "description": "A number display that animates smoothly between values using requestAnimationFrame with easeOutQuad easing.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/default/animated-number/animated-number.tsx",
+      "content": "import { useEffect, useRef, useState } from \"react\";\n\ninterface AnimatedNumberProps {\n  /** Target value to animate to */\n  value: number;\n  /** Animation duration in ms */\n  duration?: number;\n  /** Additional className */\n  className?: string;\n  /** Text to append after the number (e.g., \"%\", \"pts\") */\n  suffix?: string;\n  /** Text to prepend before the number (e.g., \"$\", \"RM\") */\n  prefix?: string;\n  /** Number of decimal places */\n  decimals?: number;\n  /** Custom number formatter (overrides decimals if provided) */\n  formatter?: (value: number) => string;\n}\n\nconst easeOutQuadFn = (t: number) => 1 - (1 - t) * (1 - t);\n\nfunction AnimatedNumber({\n  value,\n  duration = 500,\n  className,\n  suffix,\n  prefix,\n  decimals = 0,\n  formatter,\n}: AnimatedNumberProps) {\n  const [displayValue, setDisplayValue] = useState(value);\n  const prevValueRef = useRef(value);\n\n  useEffect(() => {\n    const startValue = prevValueRef.current;\n    const endValue = value;\n    const startTime = performance.now();\n    let frameId: number;\n\n    if (startValue === endValue) return;\n\n    prevValueRef.current = endValue;\n\n    const animate = (currentTime: number) => {\n      const elapsed = currentTime - startTime;\n      const progress = Math.min(elapsed / duration, 1);\n      const easeOutQuad = easeOutQuadFn(progress);\n      const current = startValue + (endValue - startValue) * easeOutQuad;\n\n      setDisplayValue(\n        decimals > 0 ? Number(current.toFixed(decimals)) : Math.round(current)\n      );\n\n      if (progress < 1) {\n        frameId = requestAnimationFrame(animate);\n      } else {\n        setDisplayValue(endValue);\n      }\n    };\n\n    frameId = requestAnimationFrame(animate);\n    return () => {\n      if (frameId) cancelAnimationFrame(frameId);\n    };\n  }, [value, duration, decimals]);\n\n  const formatted = formatter\n    ? formatter(displayValue)\n    : decimals > 0\n      ? displayValue.toFixed(decimals)\n      : String(displayValue);\n\n  return (\n    <span data-slot=\"animated-number\" className={className}>\n      {prefix}\n      {formatted}\n      {suffix}\n    </span>\n  );\n}\n\nexport { AnimatedNumber, type AnimatedNumberProps };\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

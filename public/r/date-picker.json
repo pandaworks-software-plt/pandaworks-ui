@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "date-picker",
+  "title": "Date Picker",
+  "description": "A single date picker with calendar popover.",
+  "dependencies": [
+    "date-fns"
+  ],
+  "registryDependencies": [
+    "button",
+    "calendar",
+    "popover"
+  ],
+  "files": [
+    {
+      "path": "registry/default/date-picker/date-picker.tsx",
+      "content": "import { useState } from \"react\"\nimport { format } from \"date-fns\"\nimport { CalendarIcon } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\nimport { Calendar } from \"@/components/ui/calendar\"\nimport { Popover, PopoverContent, PopoverTrigger } from \"@/components/ui/popover\"\n\ninterface DatePickerProps {\n  selected?: Date | null\n  onChange?: (date: Date | null) => void\n  placeholder?: string\n  disabled?: boolean\n  className?: string\n}\n\nfunction DatePicker({\n  selected,\n  onChange,\n  placeholder = \"Pick a date\",\n  disabled,\n  className,\n}: DatePickerProps) {\n  const [date, setDate] = useState<Date | null>(selected || null)\n\n  const handleSelect = (newDate: Date | undefined) => {\n    setDate(newDate || null)\n  }\n\n  return (\n    <Popover\n      onOpenChange={(open: boolean) => {\n        if (!open) onChange?.(date || null)\n      }}\n    >\n      <PopoverTrigger asChild>\n        <Button\n          variant=\"outline\"\n          className={cn(\n            \"w-full justify-start text-left font-normal\",\n            !date && \"text-muted-foreground\",\n            disabled && \"cursor-not-allowed opacity-50\",\n            className\n          )}\n          disabled={disabled}\n        >\n          <CalendarIcon className=\"mr-2 h-4 w-4\" />\n          {date ? format(date, \"dd/MM/yyyy\") : <span>{placeholder}</span>}\n        </Button>\n      </PopoverTrigger>\n      <PopoverContent className=\"w-auto p-0\" align=\"start\">\n        <Calendar\n          mode=\"single\"\n          selected={date || undefined}\n          onSelect={handleSelect}\n          defaultMonth={selected || undefined}\n          initialFocus\n        />\n      </PopoverContent>\n    </Popover>\n  )\n}\n\nexport { DatePicker, type DatePickerProps }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}
