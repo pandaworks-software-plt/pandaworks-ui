@@ -51,7 +51,7 @@ Changes to registry components are immediately reflected in the demo -- no `npx 
 - `CHANGELOG.md` -- human-readable, follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format
 - `public/llms.txt` -- contains a "Changelog" section at the bottom with machine-readable per-component entries (`change`, `breaking`, `details`, `action` steps) for AI agents consuming this registry
 
-When committing, update both files under the `[Unreleased]` section. When cutting a release, move unreleased entries under a dated heading (e.g., `## 2026-04-03`).
+When committing, update both files under a dated heading for today (e.g., `## 2026-04-08`). A commit is considered a release — do not use `[Unreleased]`.
 
 ## Adding a Component
 
