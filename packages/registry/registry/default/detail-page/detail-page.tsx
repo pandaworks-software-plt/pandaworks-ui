@@ -31,7 +31,7 @@ interface DetailPageHeaderProps extends HTMLAttributes<HTMLDivElement> {
   backLabel?: string
   icon?: ReactNode
   title: string
-  subtitle?: string
+  subtitle?: ReactNode
   actions?: ReactNode
 }
 
