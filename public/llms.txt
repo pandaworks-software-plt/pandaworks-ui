@@ -184,6 +184,15 @@ Each entry contains:
   - Run `npx shadcn@latest add @pandaworks/stepper --overwrite --yes` (or your registry URL) to pick up visuals and `orientation`
   - Override `className` if you need larger step markers than the new defaults
 
+#### code-label
+
+- change: modified
+- breaking: no
+- details: `CodeLabel` now uses a subtler filled background (no outline border). The copy button is hidden by default and reveals with width/opacity expansion on hover/focus; copied state still shows immediate success feedback.
+- action:
+  - Run `npx shadcn@latest add @pandaworks/code-label --overwrite --yes` (or your registry URL) to get the updated behavior and styling
+  - No API changes; existing `value`, `size`, and `className` usage stays the same
+
 #### sheet
 
 - change: modified

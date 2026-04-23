@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - `Stepper` -- compact `size-7` markers and smaller typography; completed steps and completed track segments use emerald instead of primary; current step uses primary border with a subtle ring; optional `orientation="vertical"` for a top-down layout with a left spine; horizontal layout keeps equal `flex-1` segments before, between, and after step indicators; step `description` and `tooltip` popover only show while that step is current; track segments animate a left-to-right (horizontal) or top-to-bottom (vertical) “fill” via `transform`, respecting `prefers-reduced-motion`
+- `CodeLabel` -- visual style shifted from outlined to a softer filled background; copy control is hidden by default and smoothly expands/reveals on hover/focus while remaining visible briefly after copy feedback
 - `Sheet` (`SheetContent`) -- floating panel styling: viewport inset (`0.75rem`), `rounded-2xl`, stronger shadow, subtle ring, and scroll containment for long content
 - `Sheet` -- removed Tailwind `animate-in` / `animate-out` / slide / fade classes on overlay and content (instant show and hide)
 - `Button` -- brand, destructive, outline, and secondary variants use lighter elevation (`shadow-xs` / `hover:shadow-sm`) instead of multi-layer custom box shadows
