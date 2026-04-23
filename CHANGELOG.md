@@ -4,6 +4,33 @@ All notable changes to pandaworks-ui will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## 2026-04-23
+
+### Added
+
+- Demo -- SaaS-style integrated showcase at `/saas-showcase` (dashboard, projects, tasks, team, reports, settings, command palette, confirm flows) backed by an in-memory demo store
+- `pnpm test:ui-audit` -- Playwright script (`scripts/ui-audit-playwright.mjs`) that serves the demo and writes baseline screenshots to `artifacts/playwright-ui-audit/`
+- `public/docs/ui-visual-review-checklist.md` -- manual UI review checklist for registry and demo work
+
+### Fixed
+
+- `Tooltip` (`TooltipContent`) -- render through Radix `Portal` so labels escape scrollable or `overflow`/`transform` ancestors (matches `Popover` and avoids clipped or missing tooltips in the shell and demo layouts)
+
+### Changed
+
+- `Stepper` -- horizontal layout uses equal flex segments before, between, and after step indicators so circles and labels sit centered on the track (replacing per-step `flex-1` + trailing connector, which left-aligned markers within each segment)
+- `Sheet` (`SheetContent`) -- floating panel styling: viewport inset (`0.75rem`), `rounded-2xl`, stronger shadow, subtle ring, and scroll containment for long content
+- `Sheet` -- removed Tailwind `animate-in` / `animate-out` / slide / fade classes on overlay and content (instant show and hide)
+- `Button` -- brand, destructive, outline, and secondary variants use lighter elevation (`shadow-xs` / `hover:shadow-sm`) instead of multi-layer custom box shadows
+- `Dialog` -- overlay uses `bg-black/50` with a light backdrop blur; content uses `border-border` and `shadow-md`
+- `Command` -- root panel adds `border`, `shadow-md`, and Tailwind v4 descendant variants for `cmdk` group headings
+- `DropdownMenu`, `Select` -- `border-border`, `min-w-32`, normalized shadows; disabled and placeholder states use `data-disabled` / `data-placeholder` attribute selectors; Select popper sizing uses Tailwind v4 arbitrary `h-(--radix-…)` / `min-w-(--radix-…)` forms
+- `Popover` -- explicit `border-border` on content
+- Demo theme (`apps/demo/src/index.css`) -- slightly tinted card and popover surfaces; dark mode background and surface layering refined for depth
+- Showcase -- richer `Form` demo examples; sidebar entry for the SaaS showcase; small copy and demo tweaks (`PageHeader`, `Sheet` demos)
+- Root `package.json` -- dev dependency on Playwright for the UI audit script; demo ESLint config aligned with `typescript-eslint`
+- Rebuilt `public/r/*.json` registry bundle outputs from sources (`pnpm registry:build`) and committed the updated JSON artifacts
+
 ## 2026-04-08
 
 ### Added

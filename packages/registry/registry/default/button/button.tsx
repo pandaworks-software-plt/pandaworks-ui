@@ -51,13 +51,13 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
         brand:
-          "bg-brand text-brand-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_1px_0_rgba(0,0,0,0.15)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_1px_2px_rgba(0,0,0,0.18)]",
+          "bg-brand text-brand-foreground shadow-xs hover:shadow-sm",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_0_rgba(0,0,0,0.15)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_1px_2px_rgba(0,0,0,0.18)]",
+          "bg-destructive text-destructive-foreground shadow-xs hover:shadow-sm",
         outline:
-          "border border-border bg-background text-foreground shadow-[0_1px_0_rgba(0,0,0,0.04)] hover:bg-muted hover:shadow-[0_1px_2px_rgba(0,0,0,0.06)]",
+          "border border-border bg-background text-foreground shadow-xs hover:bg-muted hover:shadow-sm",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_1px_0_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_1px_2px_rgba(0,0,0,0.08)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_1px_0_rgba(0,0,0,0.2)] dark:hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_1px_2px_rgba(0,0,0,0.25)]",
+          "bg-secondary text-secondary-foreground shadow-xs hover:shadow-sm",
         ghost:
           "hover:bg-accent hover:text-accent-foreground active:translate-y-0",
         link: "text-primary underline-offset-4 hover:underline active:translate-y-0 shadow-none",

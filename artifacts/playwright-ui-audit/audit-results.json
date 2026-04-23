@@ -1,0 +1,72 @@
+{
+  "consoleErrors": [],
+  "pageErrors": [],
+  "checks": [
+    {
+      "check": "showcase loads",
+      "pass": true
+    },
+    {
+      "check": "card demo visible",
+      "pass": true
+    },
+    {
+      "check": "table demo visible",
+      "pass": true
+    },
+    {
+      "check": "modal opens",
+      "pass": true
+    },
+    {
+      "check": "popover opens",
+      "pass": true
+    },
+    {
+      "check": "dropdown opens",
+      "pass": true
+    },
+    {
+      "check": "sheet opens (dialog visible)",
+      "pass": true
+    },
+    {
+      "check": "sheet panel inset from viewport (floating)",
+      "pass": true
+    },
+    {
+      "check": "sheet panel has rounded corners (>= 12px)",
+      "pass": true
+    },
+    {
+      "check": "sheet closes on Escape (fade dismiss)",
+      "pass": true
+    },
+    {
+      "check": "dark mode class applied",
+      "pass": true
+    },
+    {
+      "check": "saas page loads",
+      "pass": true
+    },
+    {
+      "check": "account menu opens",
+      "pass": true
+    },
+    {
+      "check": "saas dark mode applied",
+      "pass": true
+    }
+  ],
+  "sheetLayout": {
+    "insetFromViewportEdges": true,
+    "borderTopLeftRadius": "16px",
+    "radiusPx": 16,
+    "top": 12,
+    "right": 1428,
+    "bottom": 1012,
+    "innerWidth": 1440,
+    "innerHeight": 1024
+  }
+}

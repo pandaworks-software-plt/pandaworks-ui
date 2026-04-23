@@ -1,4 +1,4 @@
-import { Download, Plus, Pencil, Trash2, ArrowLeft } from "lucide-react";
+import { Download, Plus, Pencil, Trash2 } from "lucide-react";
 import { DemoSection } from "@/showcase/component-page";
 import { PageHeader } from "@/components/ui/page-header";
 import { Button } from "@/components/ui/button";

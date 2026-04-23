@@ -7,7 +7,7 @@ import { CheckIcon, CircleIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const selectableCardVariants = cva(
-  'group flex w-full cursor-pointer items-center rounded-lg border bg-card text-left shadow-xs outline-none transition-[color,border-color,box-shadow,background-color] duration-150 hover:border-primary/50 focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary/5 data-[state=checked]:ring-1 data-[state=checked]:ring-primary/20 dark:data-[state=checked]:bg-primary/10',
+  'group flex w-full cursor-pointer items-center rounded-lg border border-border/70 bg-card text-left shadow-xs outline-none transition-[color,border-color,box-shadow,background-color] duration-150 hover:border-primary/50 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary/5 data-[state=checked]:ring-1 data-[state=checked]:ring-primary/20 dark:border-border dark:data-[state=checked]:bg-primary/10',
   {
     variants: {
       size: {

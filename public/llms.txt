@@ -164,6 +164,100 @@ Each entry contains:
 
 ---
 
+### 2026-04-23
+
+#### tooltip
+
+- change: modified
+- breaking: no
+- details: `TooltipContent` now wraps Radix `Portal` so the popper layer mounts on `document.body`, avoiding clipping and stacking issues inside scrollable regions or transformed layout (same pattern as `PopoverContent`).
+- action:
+  - Run `npx shadcn@latest add @pandaworks/tooltip --overwrite --yes` (or your registry URL) to pick up the change
+  - No API changes; custom `className` / props on `TooltipContent` behave as before
+
+#### stepper
+
+- change: modified
+- breaking: no
+- details: Track layout is now `flex-1` line segments with a leading and trailing segment so step circles sit on the centerline of the bar instead of hugging the left edge of each equal-width column. Connector coloring matches the previous semantics (segment after a completed step uses primary).
+- action:
+  - Run `npx shadcn@latest add @pandaworks/stepper --overwrite --yes` (or your registry URL) if you want the centered layout in consuming apps
+
+#### sheet
+
+- change: modified
+- breaking: no
+- details: Sheet panels are inset from the viewport (floating card), use rounded corners (`rounded-2xl`), `shadow-xl`, a light ring, and `overflow-y-auto` with overscroll containment. No enter/exit animation classes on overlay or content (Radix still handles mount/unmount timing).
+- action:
+  - Run `npx shadcn@latest add @pandaworks/sheet --overwrite --yes` (or your registry URL) to pick up styles
+  - If you relied on edge-to-edge sheets, override `className` on `SheetContent` to restore full-bleed layout
+
+#### button
+
+- change: modified
+- breaking: no
+- details: `brand`, `destructive`, `outline`, and `secondary` variants now use `shadow-xs` with `hover:shadow-sm` instead of bespoke multi-layer inset/box shadows. Visual weight is slightly flatter and closer to stock shadcn elevation.
+- action:
+  - Run `npx shadcn@latest add @pandaworks/button --overwrite --yes` (or your registry URL) if you want the updated styling
+  - No prop or API changes
+
+#### dialog
+
+- change: modified
+- breaking: no
+- details: `DialogOverlay` uses `bg-black/50` with `backdrop-blur-[1px]`. `DialogContent` adds `border-border` and uses `shadow-md` instead of `shadow-lg`.
+- action:
+  - Run `npx shadcn@latest add @pandaworks/dialog --overwrite --yes` (or your registry URL)
+
+#### command
+
+- change: modified
+- breaking: no
+- details: Root `Command` panel adds `border border-border/70` and `shadow-md`. `CommandGroup` heading styles use Tailwind v4 `**:[[cmdk-group-heading]]:…` descendant variants instead of `[&_[cmdk-group-heading]]:…`.
+- action:
+  - Run `npx shadcn@latest add @pandaworks/command --overwrite --yes` (or your registry URL)
+  - If you overrode group heading styles via global CSS on `[cmdk-group-heading]`, re-check specificity against the new utilities
+
+#### dropdown-menu
+
+- change: modified
+- breaking: no
+- details: Content/sub-content use `border-border`, `min-w-32`, and `shadow-md` on sub-content. Items use `data-disabled:` variant selectors instead of `data-[disabled]:`. `max-h` uses `max-h-(--radix-dropdown-menu-content-available-height)`.
+- action:
+  - Run `npx shadcn@latest add @pandaworks/dropdown-menu --overwrite --yes` (or your registry URL)
+
+#### select
+
+- change: modified
+- breaking: no
+- details: `SelectTrigger` uses `shadow-xs` / `focus:shadow-sm` and `data-placeholder:text-muted-foreground`. `SelectContent` uses `min-w-32`, `shadow-sm`, and `data-disabled:` on items. Popper viewport uses `h-(--radix-select-trigger-height)` and `min-w-(--radix-select-trigger-width)`.
+- action:
+  - Run `npx shadcn@latest add @pandaworks/select --overwrite --yes` (or your registry URL)
+
+#### popover
+
+- change: modified
+- breaking: no
+- details: `PopoverContent` adds explicit `border-border` alongside existing border and shadow utilities.
+- action:
+  - Run `npx shadcn@latest add @pandaworks/popover --overwrite --yes` (or your registry URL)
+
+#### registry batch (alert-dialog, app-shell, attachment-input, card, input, modal, selectable-card, split-button, table, textarea)
+
+- change: modified
+- breaking: no
+- details: Minor className alignment for Tailwind v4 patterns and visual consistency (e.g. `border-border`, shadow tokens, `data-disabled` where Radix exposes the attribute, small layout tokens). No intentional public API changes.
+- action:
+  - Re-install the specific components you use from the registry with `--overwrite` if you want pixel-identical styling to the latest build
+
+#### demo (pandawork-ui repo)
+
+- change: added
+- breaking: no
+- details: New in-repo SaaS-style demo route at `/saas-showcase` for exercising registry components in a cohesive app shell. Added `pnpm test:ui-audit` (Playwright) and `artifacts/playwright-ui-audit/` baseline captures. Demo CSS variables tweaked for card/popover tint and dark surfaces.
+- action:
+  - No action for registry-only consumers. Clone/update the repo to run the demo or audit script locally.
+
 ### 2026-04-08
 
 #### detail-page

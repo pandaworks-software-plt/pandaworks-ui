@@ -20,4 +20,11 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    files: ['src/saas/router.tsx', 'src/saas/store.tsx', 'src/saas/shared.tsx'],
+    rules: {
+      // Provider + hook / util + component modules are intentional in the demo app.
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

@@ -7,6 +7,10 @@
     "dev": "pnpm --filter @pandaworks-ui/demo dev",
     "build": "pnpm registry:build && pnpm --filter @pandaworks-ui/demo build",
     "registry:build": "pnpm --filter @pandaworks-ui/registry registry:build",
-    "lint": "pnpm --filter @pandaworks-ui/demo lint"
+    "lint": "pnpm --filter @pandaworks-ui/demo lint",
+    "test:ui-audit": "node scripts/ui-audit-playwright.mjs --serve"
+  },
+  "devDependencies": {
+    "playwright": "^1.59.1"
   }
 }

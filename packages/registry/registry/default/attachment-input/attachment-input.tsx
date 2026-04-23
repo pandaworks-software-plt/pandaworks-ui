@@ -327,12 +327,12 @@ function CompactTrigger({
       disabled={disabled || atLimit}
       onClick={onClick}
       className={cn(
-        "flex h-9 w-full items-center gap-2 rounded-md border border-input bg-background px-3 text-sm shadow-[0_1px_0_rgba(0,0,0,0.04)] transition-all duration-150 ease-out",
+        "flex h-9 w-full items-center gap-2 rounded-md border border-input bg-background px-3 text-sm shadow-xs transition-all duration-150 ease-out",
         "text-muted-foreground",
-        "hover:bg-muted hover:text-foreground hover:shadow-[0_1px_2px_rgba(0,0,0,0.06)]",
+        "hover:bg-muted hover:text-foreground hover:shadow-sm",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         (disabled || atLimit) &&
-          "cursor-not-allowed opacity-40 hover:bg-background hover:text-muted-foreground hover:shadow-[0_1px_0_rgba(0,0,0,0.04)]"
+          "cursor-not-allowed opacity-40 hover:bg-background hover:text-muted-foreground hover:shadow-xs"
       )}
     >
       <Paperclip className="h-4 w-4 shrink-0" />

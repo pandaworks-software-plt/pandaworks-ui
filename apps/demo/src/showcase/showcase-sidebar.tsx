@@ -39,9 +39,24 @@ export function ShowcaseSidebar({
         <h1 className="text-sm font-semibold tracking-tight">
           Pandahrms UI
         </h1>
-        <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+        <span className="rounded bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary">
           Registry
         </span>
+      </div>
+
+      <div className="px-3 pt-3">
+        <a
+          href={`${import.meta.env.BASE_URL}saas-showcase`}
+          className="group flex items-center justify-between rounded-md border bg-linear-to-br from-primary/10 via-primary/5 to-transparent px-3 py-2 text-sm transition-colors hover:border-primary/40"
+        >
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">SaaS showcase</p>
+            <p className="text-xs text-muted-foreground group-hover:text-foreground">
+              A full demo app using the registry
+            </p>
+          </div>
+          <ExternalLink className="size-3.5 text-muted-foreground group-hover:text-foreground" />
+        </a>
       </div>
 
       <div className="px-3 pt-3">
@@ -60,7 +75,7 @@ export function ShowcaseSidebar({
       <nav className="flex-1 overflow-y-auto px-3 py-3">
         {filtered.map((cat) => (
           <div key={cat.label} className="mb-4">
-            <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <p className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {cat.label}
             </p>
             <ul className="space-y-0.5">

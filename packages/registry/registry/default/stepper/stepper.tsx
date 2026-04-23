@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 
 interface Step {
   id: number;
@@ -21,20 +21,30 @@ interface StepperProps {
 }
 
 function Stepper({ steps, currentStep, className }: StepperProps) {
+  const lastIndex = steps.length - 1;
+
   return (
     <div data-slot="stepper" className={cn("w-full", className)}>
-      <div className="flex items-center justify-between">
+      <div className="flex w-full items-start">
         {steps.map((step, index) => {
           const isCompleted = index < currentStep;
           const isCurrent = index === currentStep;
-          const isLast = index === steps.length - 1;
+          const segmentBeforeComplete =
+            index > 0 ? index - 1 < currentStep : false;
 
           return (
-            <div key={step.id} className="flex flex-1 items-center">
-              <div className="flex flex-col items-center">
+            <Fragment key={step.id}>
+              <div
+                className={cn(
+                  "mt-5 h-0.5 min-w-0 flex-1 transition-colors",
+                  segmentBeforeComplete ? "bg-primary" : "bg-border"
+                )}
+                aria-hidden
+              />
+              <div className="flex shrink-0 flex-col items-center">
                 <div
                   className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all",
+                    "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 transition-all",
                     isCompleted && "border-primary bg-primary",
                     isCurrent && "border-primary bg-background",
                     !isCompleted &&
@@ -87,19 +97,16 @@ function Stepper({ steps, currentStep, className }: StepperProps) {
                     ))}
                 </div>
               </div>
-              {!isLast && (
-                <div className="mx-4 flex-1">
-                  <div
-                    className={cn(
-                      "h-0.5 w-full transition-all",
-                      isCompleted ? "bg-primary" : "bg-border"
-                    )}
-                  />
-                </div>
-              )}
-            </div>
+            </Fragment>
           );
         })}
+        <div
+          className={cn(
+            "mt-5 h-0.5 min-w-0 flex-1 transition-colors",
+            lastIndex < currentStep ? "bg-primary" : "bg-border"
+          )}
+          aria-hidden
+        />
       </div>
     </div>
   );

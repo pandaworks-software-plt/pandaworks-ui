@@ -50,7 +50,7 @@ import { Button } from "@/components/ui/button"
                 <SheetHeader>
                   <SheetTitle>Sheet from {side}</SheetTitle>
                   <SheetDescription>
-                    This sheet slides in from the {side} of the screen.
+                    This sheet opens from the {side} of the screen.
                   </SheetDescription>
                 </SheetHeader>
                 <div className="py-4">
