@@ -32,7 +32,7 @@ For full API docs, props, and code examples, read the linked doc file.
 | PageHeader | Page title, description, and action buttons | [layout.md](docs/layout.md) |
 | DetailPage | Resource detail/show page layout with sidebar | [detail-page.md](docs/detail-page.md) |
 | Modal | Form modal with sticky header/footer, size variants | [modal.md](docs/modal.md) |
-| Stepper | Horizontal multi-step progress indicator | [layout.md](docs/layout.md) |
+| Stepper | Multi-step progress (horizontal or vertical); descriptions only on current step | [layout.md](docs/layout.md) |
 | Separator | Horizontal or vertical divider | [layout.md](docs/layout.md) |
 | Breadcrumb | Navigation breadcrumb trail | [layout.md](docs/layout.md) |
 
@@ -179,9 +179,10 @@ Each entry contains:
 
 - change: modified
 - breaking: no
-- details: Track layout is now `flex-1` line segments with a leading and trailing segment so step circles sit on the centerline of the bar instead of hugging the left edge of each equal-width column. Connector coloring matches the previous semantics (segment after a completed step uses primary).
+- details: Smaller circles (`size-7`) and labels; completed steps and finished track segments use emerald (`emerald-600` / `emerald-500` in dark). Current step uses primary border plus a light ring. New optional `orientation` prop: `"vertical"` renders a top-down list with a left spine. Horizontal layout keeps leading/trailing `flex-1` segments for even spacing. Step `description` and optional `tooltip` popover render only when that step is the current index. Track segments layer a muted base with an emerald fill that animates with `scale-x` / `scale-y` (~500ms, `ease-out`); `prefers-reduced-motion` removes the transition.
 - action:
-  - Run `npx shadcn@latest add @pandaworks/stepper --overwrite --yes` (or your registry URL) if you want the centered layout in consuming apps
+  - Run `npx shadcn@latest add @pandaworks/stepper --overwrite --yes` (or your registry URL) to pick up visuals and `orientation`
+  - Override `className` if you need larger step markers than the new defaults
 
 #### sheet
 

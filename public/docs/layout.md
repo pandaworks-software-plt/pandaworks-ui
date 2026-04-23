@@ -27,7 +27,7 @@ Props:
 
 ## Stepper
 
-A horizontal multi-step progress indicator with completed, current, and pending states. Steps can have optional descriptions and tooltip popovers.
+Multi-step progress with completed (emerald), current (primary ring), and pending states. Horizontal (default) or vertical (`orientation="vertical"`, top-down). Optional `description` and `tooltip` render only for the **current** step (active index). Connector lines use a short fill animation (`scale` transform, ~500ms); reduced motion disables the transition.
 
 ```tsx
 import { Stepper } from "@/components/ui/stepper"
@@ -40,11 +40,18 @@ import { Stepper } from "@/components/ui/stepper"
     { id: 3, title: "Submit" },
   ]}
 />
+
+<Stepper
+  orientation="vertical"
+  currentStep={0}
+  steps={[...]}
+/>
 ```
 
 Props:
 - `steps: Step[]` -- Array of steps. Each: `{ id: number; title: string; description?: string; tooltip?: ReactNode }`
 - `currentStep: number` -- Zero-based index of the current step
+- `orientation?: "horizontal" | "vertical"` -- Default `horizontal`
 
 Dependencies: popover
 

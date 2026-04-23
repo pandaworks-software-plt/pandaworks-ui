@@ -42,6 +42,7 @@ export default function StepperDemo() {
   const [step1, setStep1] = useState(1);
   const [step2, setStep2] = useState(0);
   const [step3, setStep3] = useState(1);
+  const [step4, setStep4] = useState(1);
 
   return (
     <>
@@ -124,6 +125,44 @@ export default function StepperDemo() {
                 setStep3(Math.min(stepsWithTooltip.length, step3 + 1))
               }
               disabled={step3 === stepsWithTooltip.length}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      </DemoSection>
+
+      <DemoSection
+        title="Vertical"
+        code={`<Stepper
+  orientation="vertical"
+  steps={stepsWithDescriptions}
+  currentStep={currentStep}
+/>`}
+      >
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <Stepper
+            orientation="vertical"
+            steps={stepsWithDescriptions}
+            currentStep={step4}
+          />
+          <div className="flex shrink-0 justify-center gap-2 sm:flex-col">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setStep4(Math.max(0, step4 - 1))}
+              disabled={step4 === 0}
+            >
+              Previous
+            </Button>
+            <Button
+              size="sm"
+              onClick={() =>
+                setStep4(
+                  Math.min(stepsWithDescriptions.length, step4 + 1)
+                )
+              }
+              disabled={step4 === stepsWithDescriptions.length}
             >
               Next
             </Button>
