@@ -4,6 +4,12 @@ All notable changes to this repository are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## 2026-05-11
+
+### Added
+
+- **`UserPicker` component.** [packages/registry/registry/default/user-picker/user-picker.tsx](packages/registry/registry/default/user-picker/user-picker.tsx) — avatar-trigger picker for assigning one user (single mode) or many (multi mode), backed by discriminated-union props (`mode?: 'single'` with `value: string | null`, or `mode: 'multi'` with `value: string[]`). The trigger composes `Button` ghost + `Avatar` for single/empty states and `AvatarGroup` for multi selections, including built-in `+N` overflow for crowded assignee lists. The menu composes `Popover` + `Command` with name/email filtering, an automatic search input when `users.length > 8`, optional single-mode `Unassigned`, and checkbox-style multi selection that stays open between picks. Replaces the hand-rolled Select + Avatar pattern that keeps showing up for assignee, owner, collaborator, and watcher fields. Non-breaking.
+
 ## 2026-05-07
 
 ### Added

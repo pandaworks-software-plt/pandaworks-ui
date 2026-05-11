@@ -69,6 +69,7 @@ export * from '../registry/default/timeline';
 export * from '../registry/default/toggle';
 export * from '../registry/default/toggle-group';
 export * from '../registry/default/tooltip';
+export * from '../registry/default/user-picker';
 
 // sidebar/* and app-shell-types/* are intentionally NOT re-exported here:
 // the app-shell barrel already re-exports their contents and adding them again

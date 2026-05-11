@@ -187,6 +187,7 @@ For full API docs, props, and code examples, read the linked doc file.
 | Switch | Toggle switch | [forms.md](docs/forms.md) |
 | Select | Static dropdown (< 10 items) | [forms.md](docs/forms.md) |
 | SelectPicker | Searchable dropdown, single/multi select | [select-picker.md](docs/select-picker.md) |
+| UserPicker | Avatar-trigger picker for assigning one user or many; searchable past 8 users | [user-picker.md](docs/user-picker.md) |
 | DatePicker | Single date picker | [forms.md](docs/forms.md) |
 | DateRangePicker | Date range picker with presets | [forms.md](docs/forms.md) |
 | Slider | Range slider | [forms.md](docs/forms.md) |
@@ -267,6 +268,8 @@ For **variant / tone / surface / size choices** within a chosen component (e.g. 
 | Short static dropdown (< 10 items) | Select |
 | Searchable dropdown, long lists | SelectPicker |
 | Multiple selection from a list | SelectPicker (mode="multiple") |
+| Pick a single user (assignee, owner) | UserPicker |
+| Pick multiple users (collaborators, watchers) | UserPicker (mode="multi") |
 | Pick a single date | DatePicker |
 | Pick a date range | DateRangePicker |
 | File upload with drag & drop | AttachmentInput (variant="dropzone") |
@@ -329,6 +332,16 @@ Each entry contains:
 - **details**: concise description of the change
 
 ---
+
+### 2026-05-11
+
+#### user-picker — new component (avatar-trigger user assignment picker)
+
+- **component**: UserPicker
+- **change**: added
+- **breaking**: no
+- **details**: Avatar-trigger picker for assigning one user (single mode) or many (multi mode). Composes `Popover` + `Command` + `Avatar` + `AvatarGroup`; exposes discriminated-union `mode` props (`mode?: 'single'` with `value: string | null`, or `mode: 'multi'` with `value: string[]`); auto-shows Command search when `users.length > 8`; and uses `AvatarGroup` overflow for the multi-trigger. Replaces the hand-rolled `Select` + `Avatar` pattern for assignee, owner, collaborator, reviewer, and watcher fields.
+- **action**: optional — replace local Select + Avatar assignee controls with `UserPicker`
 
 ### 2026-05-07
 

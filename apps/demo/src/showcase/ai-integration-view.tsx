@@ -77,8 +77,8 @@ export function AiIntegrationView() {
           Paste this prompt into Claude Code, Cursor, Copilot, or any other AI coding agent. It points the agent at the
           library's <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">llms.txt</code> catalog and tells
           it how to install the{' '}
-          <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">@pandaworks-sw/lucid-ui</code> npm package from
-          GitHub Packages.
+          <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">@pandaworks-sw/lucid-ui</code> npm package
+          from GitHub Packages.
         </p>
       </div>
 

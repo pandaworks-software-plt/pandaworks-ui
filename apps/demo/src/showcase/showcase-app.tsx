@@ -18,6 +18,7 @@ import RadioGroupDemo from './demos/radio-group-demo';
 import SwitchDemo from './demos/switch-demo';
 import SelectDemo from './demos/select-demo';
 import SelectPickerDemo from './demos/select-picker-demo';
+import UserPickerDemo from './demos/user-picker-demo';
 import DatePickerDemo from './demos/date-picker-demo';
 import DateRangePickerDemo from './demos/date-range-picker-demo';
 import SliderDemo from './demos/slider-demo';
@@ -207,6 +208,12 @@ const COMPONENTS: ComponentMeta[] = [
     description:
       'A searchable select picker supporting single and multiple selection with type-safe discriminated union props.',
     demo: SelectPickerDemo,
+  },
+  {
+    name: 'user-picker',
+    title: 'User Picker',
+    description: 'An avatar-trigger picker for assigning one user or many with searchable Command dropdown behavior.',
+    demo: UserPickerDemo,
   },
   {
     name: 'date-picker',
@@ -577,6 +584,7 @@ const CATEGORIES: SidebarCategory[] = [
         'select',
         'selectable-card',
         'select-picker',
+        'user-picker',
         'slider',
         'split-button',
         'switch',
