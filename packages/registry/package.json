@@ -1,6 +1,6 @@
 {
   "name": "@pandaworks-sw/lucid-ui",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Lucid UI component library — shared shadcn-style React primitives for Pandahrms frontend projects, distributed via GitHub Packages.",
   "license": "UNLICENSED",
   "repository": {

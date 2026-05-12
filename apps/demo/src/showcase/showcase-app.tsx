@@ -77,6 +77,7 @@ import TimelineDemo from './demos/timeline-demo';
 import IconBadgeDemo from './demos/icon-badge-demo';
 import CardGroupDemo from './demos/card-group-demo';
 import InlineEditableFieldDemo from './demos/inline-editable-field-demo';
+import MetaEditPillDemo from './demos/meta-edit-pill-demo';
 import ColorsDemo from './demos/colors-demo';
 import TypographyDemo from './demos/typography-demo';
 import TonesDemo from './demos/tones-demo';
@@ -556,6 +557,13 @@ const COMPONENTS: ComponentMeta[] = [
       'Display ↔ inline edit toggle with built-in Save / Cancel buttons. The editor is a render prop receiving programmatic save/cancel + isSaving so editors can wire Enter/Escape and disable while saving.',
     demo: InlineEditableFieldDemo,
   },
+  {
+    name: 'meta-edit-pill',
+    title: 'Meta Edit Pill',
+    description:
+      'Click-to-edit inline value pill that pairs a static label with a DropdownMenu-driven value. Single-select mode (Priority / Severity / Module) with optional Clear, and multi-select mode (Platforms / Tags) backed by checkbox items. Compose several together for detail-page meta strips.',
+    demo: MetaEditPillDemo,
+  },
 ];
 
 const CATEGORIES: SidebarCategory[] = [
@@ -584,6 +592,7 @@ const CATEGORIES: SidebarCategory[] = [
         'filter-bar',
         'form',
         'inline-editable-field',
+        'meta-edit-pill',
         'input',
         'number-input',
         'password-input',
@@ -696,9 +705,10 @@ export default function ShowcaseApp() {
 
   const query = search.trim().toLowerCase();
   const matches = query
-    ? COMPONENTS.filter(
-        (c) => c.title.toLowerCase().includes(query) || c.name.toLowerCase().includes(query)
-      ).slice(0, 8)
+    ? COMPONENTS.filter((c) => c.title.toLowerCase().includes(query) || c.name.toLowerCase().includes(query)).slice(
+        0,
+        8
+      )
     : [];
 
   const pickMatch = (name: string) => {

@@ -177,6 +177,7 @@ For full API docs, props, and code examples, read the linked doc file.
 |-----------|-------------|------|
 | Button | Variants, action presets, icon, tooltip, loading | [button.md](docs/button.md) |
 | InlineEditableField | Display ↔ inline-edit toggle with built-in Save/Cancel + `editor` render prop receiving programmatic save/cancel + isSaving | [forms.md](docs/forms.md) |
+| MetaEditPill | Click-to-edit inline value pill (label + value-as-DropdownMenu trigger) for fixed option sets. Single mode (Priority / Severity / Module) with optional Clear, and multi mode (Platforms / Tags) backed by checkbox items. Falls back to plain text when `canEdit=false` | [meta-edit-pill.md](docs/meta-edit-pill.md) |
 | Input | Text input field | [forms.md](docs/forms.md) |
 | NumberInput | Controlled numeric input with min/max clamp, step-driven decimals, suffix, error state, arrow-key stepping | [forms.md](docs/forms.md) |
 | PasswordInput | Password field with a built-in show/hide eye toggle; forwards refs and accepts all native input props | [forms.md](docs/forms.md) |
@@ -336,6 +337,14 @@ Each entry contains:
 ---
 
 ### 2026-05-12
+
+#### meta-edit-pill — new component (click-to-edit inline value pill)
+
+- **component**: MetaEditPill
+- **change**: added
+- **breaking**: no
+- **details**: Inline click-to-edit value pill that pairs a static label with a `DropdownMenu`-driven value (`<label> <value-trigger>`). Single-select mode (Priority / Severity / Module) with optional `allowClear` + `clearLabel` items at the top of the menu so users can reset to `null`; multi-select mode (Platforms / Tags) backed by `DropdownMenuCheckboxItem` so the menu stays open between toggles. Falls back to plain `<label> <value>` text when `canEdit=false` so the same JSX renders for viewer-only roles. Trigger uses `text-muted-foreground` on hover-to-`text-foreground` + `bg-muted/60` highlight + a small `ChevronDown` affordance to signal interactivity. Contrast: label `font-medium text-foreground` vs value `text-muted-foreground` at `text-sm` measures 9.0:1 in light mode and 8.8:1 in dark mode — both AA pass. Props: `label`, `mode` ('single' | 'multi'), `value`, `options`, `onChange`, `canEdit`, `disabled`, `emptyText`, `allowClear` + `clearLabel` (single only), `className`. Designed for detail-page meta strips where multiple fields share one line (ticket priority / severity / module / platforms, project status / phase / type, etc.). Reuses the existing `DropdownMenu` primitive — no new dependencies.
+- **action**: import `MetaEditPill` from `@pandaworks-sw/lucid-ui` and wire `onChange` to your mutation hook; pass `disabled` while the mutation is pending. Compose several pills in a `flex flex-wrap items-center gap-x-8 gap-y-2 text-sm` container to build a meta strip.
 
 #### modal — entry/exit animation slides from the bottom instead of the top-left
 

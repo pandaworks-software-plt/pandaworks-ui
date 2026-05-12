@@ -37,6 +37,7 @@ export * from '../registry/default/input';
 export * from '../registry/default/label';
 export * from '../registry/default/list-row';
 export * from '../registry/default/loading-page';
+export * from '../registry/default/meta-edit-pill';
 export * from '../registry/default/meter-row';
 export * from '../registry/default/modal';
 export * from '../registry/default/multi-stat-card';
