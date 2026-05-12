@@ -337,6 +337,14 @@ Each entry contains:
 
 ### 2026-05-12
 
+#### avatar — adds `xl` size; AvatarGroup and UserPicker pick it up automatically
+
+- **component**: Avatar, AvatarGroup, UserPicker
+- **change**: modified
+- **breaking**: no
+- **details**: Extends `AvatarSize` from `'xs' | 'sm' | 'md' | 'lg'` to `'xs' | 'sm' | 'md' | 'lg' | 'xl'`. The new `xl` token renders at `size-16 text-lg` (64px), one step above `lg` (48px). The `avatarSizeClass` map exported from the `avatar` module gains the `xl` entry, so every consumer of the shared scale picks it up: `AvatarGroup` gets `xl: '-space-x-4'` overlap spacing and `UserPicker` forwards `size="xl"` directly to its trigger Avatar / AvatarGroup. Contrast and shape behaviour are unchanged — same colorize logic, same `circle` / `square` shapes, same fallback rules. Use `xl` for profile headers, settings page member identity, and oversized assignment triggers where the existing `lg` (48px) reads as too small next to surrounding form-row text.
+- **action**: optional — pass `size="xl"` on `Avatar`, `AvatarGroup`, or `UserPicker` where a 64px avatar fits the design. No migration required for existing call sites.
+
 #### card — `CardTitle` gains `size` scale (`sm` / `md` / `lg`)
 
 - **component**: CardTitle
@@ -348,14 +356,6 @@ Each entry contains:
 ---
 
 ### 2026-05-11
-
-#### avatar — adds `xl` size; AvatarGroup and UserPicker pick it up automatically
-
-- **component**: Avatar, AvatarGroup, UserPicker
-- **change**: modified
-- **breaking**: no
-- **details**: Extends `AvatarSize` from `'xs' | 'sm' | 'md' | 'lg'` to `'xs' | 'sm' | 'md' | 'lg' | 'xl'`. The new `xl` token renders at `size-16 text-lg` (64px), one step above `lg` (48px). The `avatarSizeClass` map exported from the `avatar` module gains the `xl` entry, so every consumer of the shared scale picks it up: `AvatarGroup` gets `xl: '-space-x-4'` overlap spacing and `UserPicker` forwards `size="xl"` directly to its trigger Avatar / AvatarGroup. Contrast and shape behaviour are unchanged — same colorize logic, same `circle` / `square` shapes, same fallback rules. Use `xl` for profile headers, settings page member identity, and oversized assignment triggers where the existing `lg` (48px) reads as too small next to surrounding form-row text.
-- **action**: optional — pass `size="xl"` on `Avatar`, `AvatarGroup`, or `UserPicker` where a 64px avatar fits the design. No migration required for existing call sites.
 
 #### truncated-label — new component (ellipsis label with hover-to-reveal full text)
 
