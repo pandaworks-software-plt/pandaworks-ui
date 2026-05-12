@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## 2026-05-12
 
+### Changed
+
+- **`AlertDialog` show/hide animation now slides up from the bottom.** [packages/registry/registry/default/alert-dialog/alert-dialog.tsx](packages/registry/registry/default/alert-dialog/alert-dialog.tsx) — `AlertDialogContent` adds `data-[state=open]:slide-in-from-bottom-8` and `data-[state=closed]:slide-out-to-bottom-8` alongside the existing `fade-in/out-0` + `zoom-in/out-95` pair. The dialog now rises from the lower viewport edge to its centred resting position and slides back down on close, matching `Modal`'s motion so confirmation prompts feel like part of the same modal family. Existing `duration-200`, overlay fade, focus trap, scroll lock, and the centred `translate-x-[-50%] translate-y-[-50%]` resting position are unchanged. Non-breaking.
+
+## 2026-05-12
+
 ### Removed (BREAKING)
 
 - **`Dialog` and all its sub-exports are no longer part of the public API.** [packages/registry/src/index.ts](packages/registry/src/index.ts) — drops `export * from '../registry/default/dialog'`, so `Dialog`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`, `DialogTrigger`, `DialogClose`, `DialogOverlay`, and `DialogPortal` are no longer importable from `@pandaworks-sw/lucid-ui`. The `dialog.tsx` source file stays in the package as an internal building block (`Modal` is built on top of Radix Dialog and reuses the shared `DialogPortal` / `DialogOverlay` / `DialogTrigger` / `DialogClose` re-exports), but those names are now package-private — consumers can only reach them via the `Modal` API. Migrate every import site to `Modal` (form prompts) or `AlertDialog` (confirmation prompts). See [public/docs/modal.md](public/docs/modal.md) for the old → new mapping table.

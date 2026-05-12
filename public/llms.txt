@@ -340,6 +340,14 @@ Each entry contains:
 
 ### 2026-05-12
 
+#### alert-dialog — show/hide animation now slides up from the bottom
+
+- **component**: AlertDialogContent
+- **change**: modified
+- **breaking**: no
+- **details**: `AlertDialogContent` adds `data-[state=open]:slide-in-from-bottom-8` and `data-[state=closed]:slide-out-to-bottom-8` alongside the existing `fade-in/out-0` + `zoom-in/out-95` pair. The dialog rises from the lower viewport edge to its centred resting position and slides back down on close, matching `Modal`'s motion so confirmation prompts feel like part of the same modal family. Existing `duration-200`, overlay fade, focus trap, scroll lock, and the centred `translate-x-[-50%] translate-y-[-50%]` resting position are unchanged.
+- **action**: none — visual-only change. No props, exports, or composition rules changed.
+
 #### modal + dialog — Dialog removed from public exports; Modal gains `size` prop (BREAKING)
 
 - **component**: Modal (gains `size`), Dialog (removed)
