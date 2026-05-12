@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## 2026-05-12
 
+### Fixed
+
+- **Plugin marketplace install command uses the full `.git` URL.** [apps/demo/src/showcase/skills-view.tsx](apps/demo/src/showcase/skills-view.tsx) — switches the demo's "Use with Claude Code" install block from the shorthand `/plugin marketplace add pandaworks-sw/lucid-ui` to the explicit `/plugin marketplace add https://github.com/pandaworks-sw/lucid-ui.git`. The shorthand form does not resolve in every Claude Code version; the full `.git` URL is reliable across versions. The displayed install snippet and the underlying `REPO_URL` constant are updated together. No package code changed.
+
+## 2026-05-12
+
 ### Added
 
 - **Project logo + multi-size favicon set.** [apps/demo/public/lucid-ui-logo.png](apps/demo/public/lucid-ui-logo.png), [apps/demo/public/favicon.ico](apps/demo/public/favicon.ico), [apps/demo/public/favicon-16.png](apps/demo/public/favicon-16.png), [apps/demo/public/favicon-32.png](apps/demo/public/favicon-32.png), [apps/demo/public/favicon-48.png](apps/demo/public/favicon-48.png), [apps/demo/public/icon-256.png](apps/demo/public/icon-256.png), [apps/demo/public/apple-touch-icon.png](apps/demo/public/apple-touch-icon.png), [apps/demo/index.html](apps/demo/index.html), [apps/demo/src/showcase/showcase-sidebar.tsx](apps/demo/src/showcase/showcase-sidebar.tsx), [README.md](README.md) — adds the official lucid-ui logo (transparent-background "L" mark + wordmark) as the canonical project asset and ships a full multi-resolution favicon set in `apps/demo/public/`: a multi-size `favicon.ico`, sized PNGs at 16/32/48/256, a 180×180 `apple-touch-icon.png`, and the 500×500 `lucid-ui-logo.png` master. The demo `<head>` registers each PNG with an explicit `sizes` attribute alongside the ICO so Chromium, Firefox, and Safari each pick the sharpest variant for tab strips, bookmark bars, retina home-screens, and the iOS pinned tile. The showcase sidebar header renders the mark at `h-7 w-7` next to the existing "Lucid UI" wordmark and "Registry" badge — the image carries `alt=""` + `aria-hidden="true"` because the wordmark text is the accessible name. README.md gets a centred `<p align="center"><img …></p>` block above the H1 so the GitHub repo page leads with the brand. No registry component changes; non-breaking.

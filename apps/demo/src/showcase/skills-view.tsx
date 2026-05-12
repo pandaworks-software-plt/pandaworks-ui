@@ -3,10 +3,10 @@ import { Check, Copy, Puzzle, Sparkles, Wrench } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-const REPO = 'pandaworks-sw/lucid-ui';
+const REPO_URL = 'https://github.com/pandaworks-sw/lucid-ui.git';
 const PLUGIN_SPEC = 'lucid-ui@lucid-ui';
 
-const INSTALL_COMMANDS = `/plugin marketplace add ${REPO}
+const INSTALL_COMMANDS = `/plugin marketplace add ${REPO_URL}
 /plugin install ${PLUGIN_SPEC}`;
 
 interface SkillEntry {

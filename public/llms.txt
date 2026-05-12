@@ -338,6 +338,16 @@ Each entry contains:
 
 ### 2026-05-12
 
+#### project — plugin marketplace install command fixed (no registry change)
+
+- **component**: (project doc / demo asset, not a registry component)
+- **change**: fixed
+- **breaking**: no
+- **details**: The demo "Use with Claude Code" install block now shows `/plugin marketplace add https://github.com/pandaworks-sw/lucid-ui.git` instead of the shorthand `/plugin marketplace add pandaworks-sw/lucid-ui`. The shorthand does not resolve in every Claude Code version; the explicit `.git` URL works across versions. Both the rendered install snippet and the `REPO_URL` constant in `apps/demo/src/showcase/skills-view.tsx` are updated together.
+- **action**: consumers should use the new explicit URL when installing the plugin: `/plugin marketplace add https://github.com/pandaworks-sw/lucid-ui.git` then `/plugin install lucid-ui@lucid-ui`.
+
+### 2026-05-12
+
 #### project — logo + favicon added (no registry change)
 
 - **component**: (project asset, not a registry component)
