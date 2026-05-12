@@ -761,6 +761,7 @@ export default function ShowcaseApp() {
               />
               {showDropdown && (
                 <ul
+                  // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: listbox role is required by the ARIA combobox pattern (input controls this listbox)
                   role="listbox"
                   className="absolute left-0 right-0 top-full z-50 mt-1 max-h-80 overflow-y-auto rounded-md border bg-popover py-1 shadow-md"
                 >
