@@ -4,6 +4,12 @@ All notable changes to this repository are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## 2026-05-12
+
+### Changed
+
+- **`CardTitle` gains a `size` scale (`sm` / `md` / `lg`, default `lg`).** [packages/registry/registry/default/card/card.tsx](packages/registry/registry/default/card/card.tsx) — title text now scales by surrounding card density without a `className` override. `sm` renders `text-base font-semibold` (16px) for dense tile-sized cards in 3-up / 4-up `CardGroup` layouts; `md` renders `text-lg font-semibold tracking-tight` (18px) for standard product cards in dashboards or detail pages; `lg` (default) keeps the historical `text-2xl font-semibold leading-none tracking-tight` (24px) for hero / single-card surfaces. `CardTitleSize` is exported for type annotations, and the root element receives `data-slot="card-title"` + `data-size="<size>"` for theming hooks. The optional `icon` and `trailing` slots compose unchanged at every size. Replaces the `<CardTitle className="text-base">` override pattern that kept showing up in color-tinted card grids and dense dashboards (the showcase color-variant demo is migrated to `size="sm"` as part of this change). Plain `<CardTitle>Text</CardTitle>` usage is unchanged. Typography stays Inter at every size — heading-font-policy preserved (no Comfortaa). Non-breaking.
+
 ## 2026-05-11
 
 ### Added

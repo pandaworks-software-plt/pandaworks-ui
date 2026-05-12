@@ -202,7 +202,7 @@ For full API docs, props, and code examples, read the linked doc file.
 
 | Component | Description | Docs |
 |-----------|-------------|------|
-| Card | Container with header, content, footer | [data-display.md](docs/data-display.md) |
+| Card | Container with header, content, footer. `CardTitle` accepts `size="sm \| md \| lg"` (default `lg`) for dense / standard / hero cards | [data-display.md](docs/data-display.md) |
 | Table | Data table with header, body, footer | [data-display.md](docs/data-display.md) |
 | Badge | Status indicator with semantic tones (default/secondary/destructive/outline/success/warning/info/muted) and optional dot | [data-display.md](docs/data-display.md) |
 | Avatar | User/entity avatar with image and fallback; `<AvatarFallback>` auto-converts a full-name string to a 2-char monogram and is colorized by default (opt out via `colorize={false}`); supports `shape="circle"` (default) or `"square"` and `size="xs \| sm \| md \| lg \| xl"` (shared scale with AvatarGroup) | [data-display.md](docs/data-display.md) |
@@ -332,6 +332,18 @@ Each entry contains:
 - **action**: what consuming projects must do
 - **breaking**: whether this is a breaking change
 - **details**: concise description of the change
+
+---
+
+### 2026-05-12
+
+#### card — `CardTitle` gains `size` scale (`sm` / `md` / `lg`)
+
+- **component**: CardTitle
+- **change**: modified
+- **breaking**: no
+- **details**: `CardTitle` now accepts `size?: 'sm' | 'md' | 'lg'` (default `'lg'`) so consumers can pick a title scale by surrounding card density without overriding `className`. `sm` renders `text-base font-semibold` (16px) for dense tile-sized cards in 3-up / 4-up `CardGroup` layouts; `md` renders `text-lg font-semibold tracking-tight` (18px) for standard product cards in dashboards or detail pages; `lg` (default) preserves the historical `text-2xl font-semibold leading-none tracking-tight` (24px) for hero / single-card surfaces. `CardTitleSize` is exported for type annotations and the root element gets `data-slot="card-title"` + `data-size="<size>"` for theming hooks. `icon` and `trailing` slots compose unchanged at every size. Plain `<CardTitle>Text</CardTitle>` usage is unchanged. Replaces the `<CardTitle className="text-base">` override pattern that was sprinkled through color-tinted card grids and dense dashboards. Contrast / typography unchanged — Inter at all sizes, no Comfortaa (heading font policy preserved).
+- **action**: optional — replace `<CardTitle className="text-base">` with `<CardTitle size="sm">` and `<CardTitle className="text-lg">` with `<CardTitle size="md">`. Existing call sites continue to work without changes.
 
 ---
 

@@ -60,21 +60,38 @@ const CardAction = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({
 ));
 CardAction.displayName = 'CardAction';
 
+type CardTitleSize = 'sm' | 'md' | 'lg';
+
+const cardTitleSizeClass: Record<CardTitleSize, string> = {
+  sm: 'text-base font-semibold',
+  md: 'text-lg font-semibold tracking-tight',
+  lg: 'text-2xl font-semibold leading-none tracking-tight',
+};
+
 interface CardTitleProps extends HTMLAttributes<HTMLDivElement> {
   /** Optional leading icon — renders before children with consistent spacing. */
   icon?: ReactNode;
   /** Optional trailing slot — typically a Badge or count. */
   trailing?: ReactNode;
+  /**
+   * Title size scale. Defaults to `lg` (the historical 24px hero title).
+   * - `sm` 16px — dense card grids, tile-sized cards (e.g. color-tinted cards in a 4-up grid).
+   * - `md` 18px — standard product cards inside a dashboard or detail page.
+   * - `lg` 24px — prominent / single-card surfaces.
+   */
+  size?: CardTitleSize;
 }
 
 const CardTitle = forwardRef<HTMLDivElement, CardTitleProps>(
-  ({ className, icon, trailing, children, ...props }, ref) => {
+  ({ className, icon, trailing, size = 'lg', children, ...props }, ref) => {
     const hasAdornment = icon !== undefined || trailing !== undefined;
     return (
       <div
         ref={ref}
+        data-slot="card-title"
+        data-size={size}
         className={cn(
-          'text-2xl font-semibold leading-none tracking-tight',
+          cardTitleSizeClass[size],
           hasAdornment && 'flex items-center gap-2',
           trailing !== undefined && 'justify-between',
           className
@@ -116,3 +133,4 @@ const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({
 CardFooter.displayName = 'CardFooter';
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, CardAction };
+export type { CardTitleSize };

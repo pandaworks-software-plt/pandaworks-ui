@@ -102,11 +102,71 @@ export default function CardDemo() {
         </Card>
       </DemoSection>
 
+      <DemoSection
+        title="Title Sizes"
+        code={`<Card>
+  <CardHeader>
+    <CardTitle size="sm">Dense tile</CardTitle>
+    <CardDescription>16px — for tile-sized cards in dense grids.</CardDescription>
+  </CardHeader>
+</Card>
+
+<Card>
+  <CardHeader>
+    <CardTitle size="md">Standard card</CardTitle>
+    <CardDescription>18px — for product cards in dashboards or detail pages.</CardDescription>
+  </CardHeader>
+</Card>
+
+<Card>
+  <CardHeader>
+    <CardTitle>Prominent surface</CardTitle>
+    <CardDescription>24px (default size="lg") — for hero / single-card surfaces.</CardDescription>
+  </CardHeader>
+</Card>`}
+      >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <Card>
+            <CardHeader>
+              <CardTitle size="sm">Dense tile</CardTitle>
+              <CardDescription>16px — tile-sized card.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Use inside a 3- or 4-up grid where titles must stay compact.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle size="md">Standard card</CardTitle>
+              <CardDescription>18px — dashboard / detail page card.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                The everyday product card size — sits between dense and hero.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Prominent surface</CardTitle>
+              <CardDescription>24px — default; for single-card / hero surfaces.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">Use when the card is the page's primary subject.</p>
+            </CardContent>
+          </Card>
+        </div>
+      </DemoSection>
+
       <DemoSection title="Color Variants">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Card color="blue">
             <CardHeader>
-              <CardTitle className="text-base">Blue</CardTitle>
+              <CardTitle size="sm">Blue</CardTitle>
               <CardDescription>Gradient card with blue tint</CardDescription>
             </CardHeader>
             <CardContent>
@@ -116,7 +176,7 @@ export default function CardDemo() {
 
           <Card color="purple">
             <CardHeader>
-              <CardTitle className="text-base">Purple</CardTitle>
+              <CardTitle size="sm">Purple</CardTitle>
               <CardDescription>Gradient card with purple tint</CardDescription>
             </CardHeader>
             <CardContent>
@@ -126,7 +186,7 @@ export default function CardDemo() {
 
           <Card color="peach">
             <CardHeader>
-              <CardTitle className="text-base">Peach</CardTitle>
+              <CardTitle size="sm">Peach</CardTitle>
               <CardDescription>Gradient card with peach tint</CardDescription>
             </CardHeader>
             <CardContent>
@@ -136,7 +196,7 @@ export default function CardDemo() {
 
           <Card color="indigo">
             <CardHeader>
-              <CardTitle className="text-base">Indigo</CardTitle>
+              <CardTitle size="sm">Indigo</CardTitle>
               <CardDescription>Gradient card with indigo tint</CardDescription>
             </CardHeader>
             <CardContent>
@@ -146,7 +206,7 @@ export default function CardDemo() {
 
           <Card color="green">
             <CardHeader>
-              <CardTitle className="text-base">Green</CardTitle>
+              <CardTitle size="sm">Green</CardTitle>
               <CardDescription>Gradient card with green tint</CardDescription>
             </CardHeader>
             <CardContent>
@@ -156,7 +216,7 @@ export default function CardDemo() {
 
           <Card color="amber">
             <CardHeader>
-              <CardTitle className="text-base">Amber</CardTitle>
+              <CardTitle size="sm">Amber</CardTitle>
               <CardDescription>Gradient card with amber tint</CardDescription>
             </CardHeader>
             <CardContent>
@@ -166,7 +226,7 @@ export default function CardDemo() {
 
           <Card color="rose">
             <CardHeader>
-              <CardTitle className="text-base">Rose</CardTitle>
+              <CardTitle size="sm">Rose</CardTitle>
               <CardDescription>Gradient card with rose tint</CardDescription>
             </CardHeader>
             <CardContent>
@@ -176,7 +236,7 @@ export default function CardDemo() {
 
           <Card color="teal">
             <CardHeader>
-              <CardTitle className="text-base">Teal</CardTitle>
+              <CardTitle size="sm">Teal</CardTitle>
               <CardDescription>Gradient card with teal tint</CardDescription>
             </CardHeader>
             <CardContent>

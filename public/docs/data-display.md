@@ -140,6 +140,24 @@ import {
 </Card>
 ```
 
+`CardTitle` accepts a `size` prop to scale the title text. Defaults to `lg` (the historical 24px hero title) — existing call sites are unchanged.
+
+```tsx
+<CardTitle size="sm">Dense tile</CardTitle>     {/* 16px — tile-sized cards in dense grids */}
+<CardTitle size="md">Standard card</CardTitle>  {/* 18px — dashboard / detail page cards */}
+<CardTitle size="lg">Prominent surface</CardTitle> {/* 24px — default; hero / single-card surfaces */}
+```
+
+Sizing:
+
+| Scenario | Size |
+|----------|------|
+| Hero card on a detail page, single-card surface, marketing tile | `lg` (default) |
+| Standard product card inside a dashboard, settings group, or detail page | `md` |
+| Tile inside a dense 3-up or 4-up `CardGroup`, color-tinted summary tile | `sm` |
+
+Pick by surrounding density, the same way you pick `Button` size — don't shrink the title for visual variety, only when the card itself is dense. Combine `size` with `icon` / `trailing` freely; the row layout is preserved at every size.
+
 ## Table
 
 ```tsx
