@@ -338,6 +338,14 @@ Each entry contains:
 
 ### 2026-05-12
 
+#### dialog — open motion is fade + zoom from center (top-left slide removed)
+
+- **component**: DialogContent
+- **change**: fixed
+- **breaking**: no
+- **details**: `DialogContent` drops four directional slide classes that were drifting alongside the fade + zoom — `data-[state=open]:slide-in-from-left-1/2`, `data-[state=open]:slide-in-from-top-[48%]`, `data-[state=closed]:slide-out-to-left-1/2`, and `data-[state=closed]:slide-out-to-top-[48%]`. The dialog is already centred via `translate(-50%, -50%)`, so the diagonal slide combined with `zoom-in-95` made the panel visibly grow from a point near the top-left of the viewport before landing at center. The runtime now matches the docs at https://pandaworks-sw.github.io/lucid-ui/docs/dialog.md: fade + zoom only. `fade-in-0` / `fade-out-0`, `zoom-in-95` / `zoom-out-95`, `duration-200`, the close-button affordance, the overlay backdrop blur, and the resting position are unchanged. `Modal` (`slide-in-from-bottom-8`) and `Sheet` are intentionally untouched — only `Dialog` was drifting.
+- **action**: none — visual fix. No props, exports, or composition rules changed. Consumers on `0.8.1` who were relying on the diagonal slide for any reason can re-add the four classes via `className` on `DialogContent`, but the fade + zoom is the documented motion.
+
 #### project — plugin marketplace install command fixed (no registry change)
 
 - **component**: (project doc / demo asset, not a registry component)

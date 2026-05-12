@@ -21,6 +21,7 @@ Rebuilding rules and the audit grep commands live in `CLAUDE.md` under "Showcase
 | G9 | DropdownMenuItem destructive variant | **Closed** — `variant="destructive"` |
 | G10 | Demo `×` glyph | **Closed** — `apps/demo/src/pure/settings.tsx` uses Lucide `X` icon |
 | G11 | Badge default-class redundancy in docs | **Closed** — `public/docs/data-display.md` updated; default classes documented |
+| G12 | DialogContent diagonal slide drift | **Closed (0.8.2)** — removed `slide-in-from-left-1/2` + `slide-in-from-top-[48%]` (and matching `slide-out-*`) from `DialogContent`. Open motion is now fade + zoom from center, matching the docs. Modal (`slide-in-from-bottom-8`) and Sheet are unchanged. |
 
 **All gaps closed.** Pure-showcase ships without custom UI components, hand-rolled chips/spans, or hardcoded Tailwind palette colors. Every visual element on every route routes through the registry.
 
