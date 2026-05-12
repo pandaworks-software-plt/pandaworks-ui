@@ -337,6 +337,14 @@ Each entry contains:
 
 ### 2026-05-12
 
+#### modal — entry/exit animation slides from the bottom instead of the top-left
+
+- **component**: ModalContent
+- **change**: modified
+- **breaking**: no
+- **details**: `ModalContent` swaps the diagonal `slide-out-to-left-1/2 + slide-out-to-top-[48%]` (and matching `slide-in-from-*`) pair for a single vertical axis: `data-[state=open]:slide-in-from-bottom-8` and `data-[state=closed]:slide-out-to-bottom-8`. The modal now rises from the lower viewport edge to its centred resting position and slides back down on close — matches the sheet pattern users already see on mobile flows and feels less like a tooltip animation. Existing `fade-in-0` / `fade-out-0`, `zoom-in-95` / `zoom-out-95`, `duration-200`, overlay fade, focus trap, scroll lock, and the centred `translate-x-[-50%] translate-y-[-50%]` resting position are unchanged. The 32px (`bottom-8`) travel stays inside the viewport even at the existing `max-h-[85vh]` ceiling on short windows.
+- **action**: none — visual-only change. No props, exports, or composition rules changed.
+
 #### avatar — adds `xl` size; AvatarGroup and UserPicker pick it up automatically
 
 - **component**: Avatar, AvatarGroup, UserPicker
