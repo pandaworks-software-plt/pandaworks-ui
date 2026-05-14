@@ -54,6 +54,7 @@ export * from '../registry/default/select';
 export * from '../registry/default/select-picker';
 export * from '../registry/default/selectable-card';
 export * from '../registry/default/separator';
+export * from '../registry/default/settings-row';
 export * from '../registry/default/sheet';
 export * from '../registry/default/skeleton';
 export * from '../registry/default/slider';

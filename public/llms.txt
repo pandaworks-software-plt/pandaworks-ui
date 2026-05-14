@@ -199,6 +199,7 @@ For full API docs, props, and code examples, read the linked doc file.
 | AttachmentInput | File upload with dropzone/compact variants | [attachment-input.md](docs/attachment-input.md) |
 | SelectableCard | Card-based single/multi selection | [forms.md](docs/forms.md) |
 | FilterBar | FilterButton trigger + ActiveFilters chips | [filter-bar.md](docs/filter-bar.md) |
+| SettingsRow | Pure-layout row for /settings/* pages: title + description + helper + control + trailing slot. Inline or stacked layout. Opt-in per-row Save / Cancel via `showSave` so the parent page can run a batched save flow when `showSave` is false (the default) | [settings-row.md](docs/settings-row.md) |
 
 ### Data Display
 
@@ -298,6 +299,7 @@ For **variant / tone / surface / size choices** within a chosen component (e.g. 
 | Status indicator | Badge |
 | Loading placeholder | Skeleton |
 | Light/dark/system theme switcher | ThemeToggle |
+| Settings page row (label + control + helper + optional save) | SettingsRow |
 | Full-screen loading state | LoadingPage |
 | Offline/connectivity warning | ConnectionBanner |
 | Error boundary fallback | ErrorFallback |
@@ -341,6 +343,14 @@ Each entry contains:
 ---
 
 ### 2026-05-14
+
+#### settings-row — new component (pure-layout row for /settings/* pages)
+
+- **component**: SettingsRow
+- **change**: added
+- **breaking**: no
+- **details**: New `SettingsRow` ships at [packages/registry/registry/default/settings-row/settings-row.tsx](packages/registry/registry/default/settings-row/settings-row.tsx). Pure-layout row for settings pages: composes `title` + optional `description` + control (children) + optional `helperText` + optional `trailing` action slot. Two layouts via the `layout` prop: `inline` (default — control sits to the right of the label block, good for `Switch` / icon-trigger controls) and `stacked` (control sits on its own row below, good for full-width `Input` / `Textarea`). Save UI is opt-in via `showSave` (default `false`); when `true`, the row renders a right-aligned `Cancel` + `Save` pair backed by `Button action="cancel"` / `action="save"` so icons and variants stay consistent across the app. The parent owns the state and passes `onSave` / `onCancel` / `dirty` / `saving` / `saveLabel` / `cancelLabel`. `Cancel` is only rendered when `onCancel` is provided. The root receives `data-slot="settings-row"` + `data-layout="<inline|stacked>"` for theming hooks. The default `showSave={false}` keeps the row layout-only so the parent page can run a batched save flow elsewhere (e.g. a footer Save button) — opt in per-row when the row is independent.
+- **action**: optional — settings pages with hand-rolled `<div class="flex items-center justify-between">title + control` rows can migrate to `SettingsRow` for consistent spacing, font sizes, and per-row save behavior. New API; nothing else changed.
 
 #### theme-toggle — new component (light/dark/system theme switcher)
 

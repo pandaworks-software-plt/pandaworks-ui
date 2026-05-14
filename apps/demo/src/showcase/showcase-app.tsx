@@ -81,6 +81,7 @@ import CardGroupDemo from './demos/card-group-demo';
 import InlineEditableFieldDemo from './demos/inline-editable-field-demo';
 import MetaEditPillDemo from './demos/meta-edit-pill-demo';
 import ThemeToggleDemo from './demos/theme-toggle-demo';
+import SettingsRowDemo from './demos/settings-row-demo';
 import ColorsDemo from './demos/colors-demo';
 import TypographyDemo from './demos/typography-demo';
 import TonesDemo from './demos/tones-demo';
@@ -329,6 +330,13 @@ const COMPONENTS: ComponentMeta[] = [
     description:
       'Icon-only dropdown that switches the app between light, dark, and system themes. Persists the choice in localStorage and follows the OS preference when set to system.',
     demo: ThemeToggleDemo,
+  },
+  {
+    name: 'settings-row',
+    title: 'Settings Row',
+    description:
+      'Pure-layout row for settings pages: title + description + helper + control + trailing slot. Inline or stacked layout. Opt-in per-row Save / Cancel via the showSave prop; default behavior is layout-only so the parent page can own a batched save flow.',
+    demo: SettingsRowDemo,
   },
   {
     name: 'command',
@@ -613,6 +621,7 @@ const CATEGORIES: SidebarCategory[] = [
         'selectable-card',
         'select-picker',
         'user-picker',
+        'settings-row',
         'slider',
         'split-button',
         'switch',
