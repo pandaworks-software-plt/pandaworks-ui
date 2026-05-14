@@ -4,6 +4,12 @@ All notable changes to this repository are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## 2026-05-15
+
+### Added
+
+- **Demo: "What's new" page + automatic "New" sidebar badge.** [apps/demo/src/showcase/whats-new-view.tsx](apps/demo/src/showcase/whats-new-view.tsx), [apps/demo/src/showcase/showcase-app.tsx](apps/demo/src/showcase/showcase-app.tsx), [apps/demo/src/showcase/showcase-sidebar.tsx](apps/demo/src/showcase/showcase-sidebar.tsx) — adds a new top-level "What's new" entry to the showcase sidebar (Megaphone icon, anchored above "Use with AI") that opens a page listing recent registry additions and changes grouped by date. Each entry is a clickable card that routes to the corresponding component demo via hash navigation (`href="#/<componentName>"`) so reviewers can jump straight into the API. Entries are tagged with a tone-coded `Badge` (`added` → `success`, `changed` / `fixed` → `info`, `removed` → `destructive`, `breaking` → `destructive`) and pull from a hand-curated `ENTRIES` array at the top of `whats-new-view.tsx`. The sidebar also automatically renders a small "New" badge next to any component whose `ComponentMeta.since` ISO date (YYYY-MM-DD) is within the last 14 days (controlled by `NEW_BADGE_DAYS` in `showcase-sidebar.tsx`). `since` is undefined for older components and set to `'2026-05-14'` on `ThemeToggle`, `SettingsRow`, `TagInput`, and `InboxMenu`. The badge is purely date-driven — no manual flag to toggle, no stale state to clean up. Demo-only change; the published `@pandaworks-sw/lucid-ui` tarball is unaffected. Non-breaking.
+
 ## 2026-05-14
 
 ### Added

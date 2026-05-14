@@ -346,6 +346,18 @@ Each entry contains:
 
 ---
 
+### 2026-05-15
+
+#### project — demo "What's new" page + automatic "New" sidebar badge
+
+- **component**: project (demo-only)
+- **change**: added
+- **breaking**: no
+- **details**: New top-level "What's new" entry in the showcase sidebar opens a page that lists recent registry additions / changes grouped by date. Each card is clickable and routes to the matching component demo via hash navigation. The sidebar also automatically renders a small "New" badge next to any component whose `ComponentMeta.since` ISO date (YYYY-MM-DD) is within the last 14 days (`NEW_BADGE_DAYS` in `showcase-sidebar.tsx`). `since` is currently set to `'2026-05-14'` on `ThemeToggle`, `SettingsRow`, `TagInput`, and `InboxMenu`. The published `@pandaworks-sw/lucid-ui` tarball is unaffected.
+- **action**: none — registry consumers see no API change. When adding a new component, set `since: '<today>'` on its ComponentMeta in `apps/demo/src/showcase/showcase-app.tsx` and add a top-of-list entry to the `ENTRIES` array in `apps/demo/src/showcase/whats-new-view.tsx`.
+
+---
+
 ### 2026-05-14
 
 #### inbox-menu — new component (header notification center)
