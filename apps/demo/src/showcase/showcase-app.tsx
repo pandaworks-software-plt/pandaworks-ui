@@ -27,6 +27,7 @@ import DatePickerDemo from './demos/date-picker-demo';
 import DateRangePickerDemo from './demos/date-range-picker-demo';
 import SliderDemo from './demos/slider-demo';
 import TableDemo from './demos/table-demo';
+import TableListCellDemo from './demos/table-list-cell-demo';
 import CardDemo from './demos/card-demo';
 import BadgeDemo from './demos/badge-demo';
 import AvatarDemo from './demos/avatar-demo';
@@ -253,6 +254,13 @@ const COMPONENTS: ComponentMeta[] = [
     title: 'Table',
     description: 'A table component with header, body, row, and cell sub-components.',
     demo: TableDemo,
+  },
+  {
+    name: 'table-list-cell',
+    title: 'Table List Cell',
+    description:
+      'Two-line primary cell for table rows — leading icon + eyebrow + title with a flex-wrap meta strip below. Pairs with the xs Badge size and the MetaDivider helper for dense list-style tables (tickets, projects, templates).',
+    demo: TableListCellDemo,
   },
   {
     name: 'card',

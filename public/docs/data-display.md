@@ -27,8 +27,21 @@ Pass `dot` to render a leading status dot tinted to match the variant — useful
 <Badge variant="info" dot>Planning</Badge>
 ```
 
+Sizes (`size` prop):
+
+| size | height | padding | text | use case |
+|------|--------|---------|------|----------|
+| `default` | auto | `px-2.5 py-0.5` | `text-xs` | Default — page headers, status pills, list rows |
+| `xs` | `h-5` | `px-1.5` | `text-[11px] leading-none` | Dense meta strips inside table-row sub-lines (pairs with `TableListCell`) |
+
+```tsx
+<Badge size="xs" variant="muted">Admin</Badge>
+<Badge size="xs" variant="warning"><Clock className="size-3" />SLA Today</Badge>
+```
+
 Props:
 - `variant?: "default" | "secondary" | "destructive" | "outline" | "success" | "warning" | "info" | "muted"`
+- `size?: "default" | "xs"` — controls height, padding, and text size; defaults to `default`
 - `dot?: boolean` — render a leading status dot tinted to match the variant
 - `tooltipText?: string` — override the auto-tooltip text (defaults to the children text content when truncated)
 
@@ -338,6 +351,59 @@ For wrapped lists, place `ListRow`s inside a Card with `divide-y` and an inset c
   </CardContent>
 </Card>
 ```
+
+## TableListCell
+
+Two-line primary cell for `Table` rows. Use it when each row needs a title plus a flex-wrap strip of meta (badges, dividers, customer chips). Built on `TableCell` + `TruncatedLabel`. Pair with `Badge size="xs"` for the dense meta strip and the sibling `MetaDivider` helper for the vertical pipe.
+
+Use this — not `ListRow` — when you are inside a real `<Table>` shell (so the cell sits in a `<tr>` alongside other `<td>` cells like status, owners, actions). Use `ListRow` when the list is a div/button stack inside a `Card`.
+
+```tsx
+import { Badge } from "@/components/ui/badge"
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { MetaDivider, TableListCell } from "@/components/ui/table-list-cell"
+import { AlertTriangle, Bug } from "lucide-react"
+
+<Table>
+  <TableHeader className="bg-muted/50">
+    <TableRow>
+      <TableHead className="px-6 py-3">Ticket</TableHead>
+      <TableHead>Status</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {tickets.map((t) => (
+      <TableRow key={t.id} className="group cursor-pointer hover:bg-accent" onClick={() => open(t.id)}>
+        <TableListCell
+          leadingIcon={<Bug className="size-4 shrink-0 text-destructive" />}
+          eyebrow={`#${t.id}`}
+          title={t.title}
+          meta={
+            <>
+              <Badge variant="destructive" size="xs"><AlertTriangle className="size-3" />SLA breached</Badge>
+              <Badge variant="warning" size="xs">High</Badge>
+              <MetaDivider />
+              <Badge variant="outline" size="xs">{t.customer}</Badge>
+            </>
+          }
+        />
+        <TableCell className="px-6 py-4">{t.status}</TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
+```
+
+Props:
+- `leadingIcon?: ReactNode` — small status/type icon placed before the eyebrow
+- `eyebrow?: ReactNode` — small monospaced muted label (e.g. `#TICKET-123`)
+- `title: string` — primary line; rendered with `TruncatedLabel` for auto-tooltip on overflow
+- `meta?: ReactNode` — flex-wrap sub-line content; auto-wrapped in `mt-1 flex flex-wrap items-center gap-2`
+- Plus pass-through `TableCell` props (`className`, `onClick`, …)
+
+The cell defaults to `w-full max-w-0 px-6 py-4` so it expands to fill remaining horizontal space and clips long titles via `TruncatedLabel`. The wrapping `<TableRow className="group cursor-pointer hover:bg-accent">` stays in caller code so each list can decide its own click + hover semantics.
+
+`MetaDivider` is a thin vertical pipe (`h-3 w-px bg-border`) — use between meta groups to separate badge clusters from secondary text. It is decorative (`aria-hidden`).
 
 ## StatCard
 

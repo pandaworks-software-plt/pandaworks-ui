@@ -209,7 +209,8 @@ For full API docs, props, and code examples, read the linked doc file.
 |-----------|-------------|------|
 | Card | Container with header, content, footer. `CardTitle` accepts `size="sm \| md \| lg"` (default `lg`) for dense / standard / hero cards | [data-display.md](docs/data-display.md) |
 | Table | Data table with header, body, footer | [data-display.md](docs/data-display.md) |
-| Badge | Status indicator with semantic tones (default/secondary/destructive/outline/success/warning/info/muted) and optional dot | [data-display.md](docs/data-display.md) |
+| TableListCell | Two-line primary cell for Table rows: leading icon + eyebrow + title with a flex-wrap meta strip below. Pairs with `Badge size="xs"` and `MetaDivider` for ticket / project / template list tables | [data-display.md](docs/data-display.md) |
+| Badge | Status indicator with semantic tones (default/secondary/destructive/outline/success/warning/info/muted), optional `dot`, and `size="default \| xs"` (xs = h-5 px-1.5 text-[11px] for dense meta strips) | [data-display.md](docs/data-display.md) |
 | Avatar | User/entity avatar with image and fallback; `<AvatarFallback>` auto-converts a full-name string to a 2-char monogram and is colorized by default (opt out via `colorize={false}`); supports `shape="circle"` (default) or `"square"` and `size="xs \| sm \| md \| lg \| xl"` (shared scale with AvatarGroup) | [data-display.md](docs/data-display.md) |
 | AvatarGroup | Stack of overlapping Avatars with `max` overflow tile; inherits the Avatar shape; `size` accepts `xs \| sm \| md \| lg \| xl` | [data-display.md](docs/data-display.md) |
 | Calendar | Date calendar | [data-display.md](docs/data-display.md) |
@@ -343,6 +344,26 @@ Each entry contains:
 - **action**: what consuming projects must do
 - **breaking**: whether this is a breaking change
 - **details**: concise description of the change
+
+---
+
+### 2026-05-16
+
+#### table-list-cell — new component (two-line primary cell for table rows)
+
+- **component**: TableListCell
+- **change**: added
+- **breaking**: no
+- **details**: New `TableListCell` ships at [packages/registry/registry/default/table-list-cell/table-list-cell.tsx](packages/registry/registry/default/table-list-cell/table-list-cell.tsx). Renders a `<TableCell>` (defaults `w-full max-w-0 px-6 py-4`) containing a two-line layout: primary line = optional `leadingIcon` + optional muted monospaced `eyebrow` + `title` (rendered with `TruncatedLabel` for auto-tooltip on overflow), and an optional `meta` sub-line wrapped in `mt-1 flex flex-wrap items-center gap-2`. Designed to standardise the ticket-listing / project-listing / template-listing row pattern that two consumers were hand-rolling (title + flex-wrap badge strip). The sibling `MetaDivider` helper exports a thin vertical pipe (`h-3 w-px bg-border`, `aria-hidden`) for separating meta groups inside the strip. The wrapping `<TableRow className="group cursor-pointer hover:bg-accent">` stays in caller code so each list can decide its own click + hover semantics. The cell takes pass-through `TableCell` props. Sits in the npm-package barrel alphabetically between `table` and `tabs`.
+- **action**: optional — projects with hand-rolled "title + meta-strip" cells inside list tables (tickets, projects, templates, customers) can migrate. Replace the inner JSX of the primary `<TableCell>` with `<TableListCell title=... meta={...} />`. Pair the meta strip with `Badge size="xs"` (see the Badge entry below) and `MetaDivider` instead of hand-tuning `h-5 px-1.5 text-[11px] leading-none` Badge classNames or `h-3 w-px bg-border` spans.
+
+#### badge — new `size` variant (`default` / `xs`)
+
+- **component**: Badge
+- **change**: modified
+- **breaking**: no
+- **details**: `Badge` now accepts `size?: "default" | "xs"`. `default` preserves the previous look (`px-2.5 py-0.5 text-xs`). `xs` produces a dense chip suited for meta strips inside table rows (`h-5 px-1.5 text-[11px] leading-none`) — measured 4.5:1+ on every variant in both light and dark modes since chroma is unchanged. No existing call site changes: `size` defaults to `default`, and the base class previously had its sizing locked inline (`px-2.5 py-0.5 text-xs`) which is now reproduced verbatim in the `default` size variant. Pairs with `TableListCell` for the new table-list-cell row pattern.
+- **action**: optional — projects that hand-rolled `className="h-5 px-1.5 text-[11px] leading-none"` on Badges (e.g. ticket list, project list) should drop those classNames and pass `size="xs"` instead. No upgrade is mandatory.
 
 ---
 

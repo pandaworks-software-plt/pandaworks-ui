@@ -4,6 +4,16 @@ All notable changes to this repository are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## 2026-05-16
+
+### Added
+
+- **`TableListCell` component.** [packages/registry/registry/default/table-list-cell/table-list-cell.tsx](packages/registry/registry/default/table-list-cell/table-list-cell.tsx) — two-line primary cell for `Table` rows. Renders a `<TableCell>` (defaults `w-full max-w-0 px-6 py-4`) containing a primary line (optional `leadingIcon` + optional muted monospaced `eyebrow` + `title` rendered with `TruncatedLabel`) and an optional `meta` sub-line auto-wrapped in `mt-1 flex flex-wrap items-center gap-2`. Formalises the ticket-listing / project-listing / template-listing row pattern that two consumer codebases were hand-rolling. The sibling `MetaDivider` export (`h-3 w-px bg-border`, `aria-hidden`) replaces hand-authored vertical-pipe spans inside the meta strip. The wrapping `<TableRow className="group cursor-pointer hover:bg-accent">` stays in caller code so each list owns its own click + hover semantics. Pass-through `TableCell` props. Reference doc: [docs/data-display.md](public/docs/data-display.md#tablelistcell). Non-breaking.
+
+### Changed
+
+- **`Badge` gains a `size` variant (`default` | `xs`).** [packages/registry/registry/default/badge/badge.tsx](packages/registry/registry/default/badge/badge.tsx) — `default` preserves the previous look (`px-2.5 py-0.5 text-xs`); `xs` produces a dense chip suited for meta strips inside table rows (`h-5 px-1.5 text-[11px] leading-none`). Existing call sites are unaffected — the previous inline `px-2.5 py-0.5 text-xs` classes are reproduced verbatim in the `default` size variant, and `size` defaults to `default`. Contrast unchanged: same chroma + same foreground tokens, so every variant keeps its AA pass in both light and dark modes (success-soft-fg, info-soft-fg, warning-soft-fg, destructive-soft-fg, muted, destructive-aa). Pairs with `TableListCell` for the new table-list-cell row pattern — consumers should swap hand-rolled `className="h-5 px-1.5 text-[11px] leading-none"` overrides for `size="xs"`. Non-breaking.
+
 ## 2026-05-15
 
 ### Added

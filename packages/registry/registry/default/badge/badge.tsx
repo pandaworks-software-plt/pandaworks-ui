@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const badgeVariants = cva(
-  'inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 max-w-full truncate',
+  'inline-flex items-center gap-1 rounded-full border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 max-w-full truncate',
   {
     variants: {
       variant: {
@@ -18,9 +18,14 @@ const badgeVariants = cva(
         info: 'border-transparent bg-info/15 text-info-soft-fg dark:bg-info/20',
         muted: 'border-transparent bg-muted text-muted-foreground dark:text-stone-300',
       },
+      size: {
+        default: 'px-2.5 py-0.5 text-xs',
+        xs: 'h-5 px-1.5 text-[11px] leading-none',
+      },
     },
     defaultVariants: {
       variant: 'default',
+      size: 'default',
     },
   }
 );
@@ -50,11 +55,11 @@ export interface BadgeProps extends HTMLAttributes<HTMLDivElement>, VariantProps
   dot?: boolean;
 }
 
-function Badge({ className, variant, children, tooltipText, dot, ...props }: BadgeProps) {
+function Badge({ className, variant, size, children, tooltipText, dot, ...props }: BadgeProps) {
   const label = tooltipText ?? (typeof children === 'string' ? children : undefined);
 
   const badge = (
-    <div data-slot="badge" className={cn(badgeVariants({ variant }), className)} {...props}>
+    <div data-slot="badge" className={cn(badgeVariants({ variant, size }), className)} {...props}>
       {dot && <span aria-hidden className={cn(dotVariants({ variant }))} />}
       {children}
     </div>

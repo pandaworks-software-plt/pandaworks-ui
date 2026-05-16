@@ -65,6 +65,7 @@ export * from '../registry/default/stat-card';
 export * from '../registry/default/stepper';
 export * from '../registry/default/switch';
 export * from '../registry/default/table';
+export * from '../registry/default/table-list-cell';
 export * from '../registry/default/tabs';
 export * from '../registry/default/tag-input';
 export * from '../registry/default/textarea';
