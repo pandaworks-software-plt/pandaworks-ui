@@ -207,10 +207,10 @@ export default function AvatarDemo() {
           When an <code className="font-mono text-xs">AvatarImage</code> is rendered at{' '}
           <code className="font-mono text-xs">md</code> or larger, the same image is also drawn behind the foreground as
           a scaled-up, desaturated, blurred backdrop. Opaque photos get a soft ambient color halo. Transparent PNGs (see
-          the second row) get a soft character halo on top of the new <code className="font-mono text-xs">bg-muted</code>{' '}
-          base so they never bleed the page background. <code className="font-mono text-xs">xs</code> and{' '}
-          <code className="font-mono text-xs">sm</code> avatars skip the backdrop layer — the blur is invisible at that
-          scale and the extra image decode is wasted work.
+          the second row) get a soft character halo on top of the new{' '}
+          <code className="font-mono text-xs">bg-muted</code> base so they never bleed the page background.{' '}
+          <code className="font-mono text-xs">xs</code> and <code className="font-mono text-xs">sm</code> avatars skip
+          the backdrop layer — the blur is invisible at that scale and the extra image decode is wasted work.
         </p>
         <div className="flex flex-col gap-6 pt-3">
           <div className="flex items-end gap-4">
