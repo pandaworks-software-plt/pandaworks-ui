@@ -61,6 +61,10 @@ import { Users, LayoutDashboard } from "lucide-react"
               background/container (default: true)
             </li>
             <li>
+              <code className="text-xs">branding.subtitle</code> -- small muted line under the brand name (e.g. version
+              string or environment label); hidden when the sidebar collapses to icon mode
+            </li>
+            <li>
               <code className="text-xs">linkComponent</code> -- custom link component for client-side navigation (e.g.
               TanStack Router Link, Next.js Link)
             </li>

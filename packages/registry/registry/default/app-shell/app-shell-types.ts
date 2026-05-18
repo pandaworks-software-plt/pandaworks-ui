@@ -8,6 +8,8 @@ export interface AppShellProps {
     href?: string;
     /** Whether to show the default wrapper box around the logo. Set to false if your logo already has its own background/container. Default: true */
     logoWrapper?: boolean;
+    /** Small muted line shown under the brand name (e.g. version string, environment label). Hidden when the sidebar collapses to icon mode. */
+    subtitle?: string;
   };
   navigation: NavItem[];
   user?: {

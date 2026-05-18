@@ -13,6 +13,14 @@ interface WhatsNewEntry {
 const ENTRIES: WhatsNewEntry[] = [
   {
     date: '2026-05-18',
+    componentName: 'app-shell',
+    title: 'AppShell branding subtitle',
+    summary:
+      'AppShell branding gains an optional `subtitle` field — a small muted line that renders under the brand name (e.g. version string, environment label, tenant name). Hides automatically when the sidebar collapses to icon mode. Non-breaking; existing call sites unchanged.',
+    kind: 'added',
+  },
+  {
+    date: '2026-05-18',
     componentName: 'card',
     title: 'CardTitle default size flipped to sm (BREAKING)',
     summary:

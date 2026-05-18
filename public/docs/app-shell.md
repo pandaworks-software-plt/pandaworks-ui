@@ -38,7 +38,7 @@ import { Users, LayoutDashboard, LogOut } from "lucide-react"
 ```
 
 Props:
-- `branding: { name: string; logo?: string; href?: string }` -- App branding in sidebar header
+- `branding: { name: string; logo?: string; href?: string; logoWrapper?: boolean; subtitle?: string }` -- App branding in sidebar header. `subtitle` renders a small muted line under the brand name (e.g. version string, environment label) and hides automatically when the sidebar collapses to icon mode.
 - `navigation: NavItem[]` -- Sidebar nav items. Each: `{ label, href, icon?, active?, items?: NavItem[] }`
 - `user?: { name, email?, avatar?, actions?: UserAction[] }` -- User menu in sidebar footer
 - `header?: ReactNode` -- Content next to sidebar trigger in the top bar

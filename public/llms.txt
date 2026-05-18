@@ -349,6 +349,14 @@ Each entry contains:
 
 ### 2026-05-18
 
+#### app-shell — branding gains optional `subtitle` slot
+
+- **component**: AppShell (branding)
+- **change**: modified
+- **breaking**: no
+- **details**: `AppShellProps['branding']` gains `subtitle?: string`. When set, `BrandingLink` renders a second line under `branding.name` styled `text-xs text-muted-foreground` (mirrors the `user.email` row pattern below the nav). The subtitle sits inside the same `grid flex-1 ... leading-tight` block as the brand name, so the existing `SidebarMenuButton` icon-collapse classes clip it away when the sidebar collapses to icon mode — no extra responsive logic. Designed for short non-interactive metadata (build/version string, environment tag, tenant label); long strings truncate via the existing `truncate` class. Contrast unchanged — `text-muted-foreground` over the sidebar background already clears AA in both themes. Default behavior is unchanged for callers that omit `subtitle`. Non-breaking.
+- **action**: optional — consumers that want to surface the package version, environment label, or tenant name under the brand mark can pass `branding.subtitle="v0.0.7"` (or similar). Nothing required for existing call sites.
+
 #### card — CardTitle default `size` flipped from `lg` to `sm` (BREAKING)
 
 - **component**: CardTitle

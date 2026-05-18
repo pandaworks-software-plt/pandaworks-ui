@@ -144,9 +144,7 @@ export default function CardDemo() {
               <CardDescription>18px — slightly more prominent.</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Sits between the default product card and a hero card.
-              </p>
+              <p className="text-sm text-muted-foreground">Sits between the default product card and a hero card.</p>
             </CardContent>
           </Card>
 
