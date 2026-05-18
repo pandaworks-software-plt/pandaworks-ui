@@ -10,7 +10,7 @@ import {
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib';
-import { Avatar, AvatarFallback, avatarSizeClass, type AvatarShape, type AvatarSize } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, type AvatarShape, type AvatarSize } from '@/components/ui/avatar';
 
 const avatarGroupVariants = cva('flex items-center', {
   variants: {
@@ -38,6 +38,12 @@ export interface AvatarGroupProps
   shape?: AvatarShape;
 }
 
+// Each stacked avatar layers a 2px page-background ring (for punched-out separation
+// from neighbours) over a 1px hairline border (so the edge stays readable when the
+// avatar content matches the page background — e.g. a dark transparent-PNG on a
+// dark surface). Together they give every circle a clean, defined boundary.
+const STACK_SEPARATION = 'border border-border/60 ring-2 ring-background';
+
 const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
   ({ className, max, size = 'sm', shape, children, ...props }, ref) => {
     const all = Children.toArray(children).filter(isValidElement) as ReactElement<
@@ -52,11 +58,12 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
           cloneElement(child, {
             key: child.key ?? idx,
             shape: child.props.shape ?? shape,
-            className: cn(avatarSizeClass[size], 'ring-2 ring-background', child.props.className),
+            size,
+            className: cn(STACK_SEPARATION, child.props.className),
           })
         )}
         {overflow > 0 && (
-          <Avatar shape={shape} className={cn(avatarSizeClass[size], 'ring-2 ring-background')}>
+          <Avatar shape={shape} size={size} className={STACK_SEPARATION}>
             <AvatarFallback colorize={false} className="font-medium">
               +{overflow}
             </AvatarFallback>

@@ -12,6 +12,22 @@ interface WhatsNewEntry {
 
 const ENTRIES: WhatsNewEntry[] = [
   {
+    date: '2026-05-18',
+    componentName: 'avatar',
+    title: 'Avatar transparent-PNG fix + blurred backdrop',
+    summary:
+      'Avatar Root now paints a bg-muted base so transparent-PNG avatars no longer bleed the page through the circle. AvatarImage also renders a self-blurred, desaturated, dimmed copy of the image behind the foreground at md / lg / xl sizes — an Apple-Music-style ambient halo. xs and sm skip the backdrop to keep dense lists cheap.',
+    kind: 'fixed',
+  },
+  {
+    date: '2026-05-18',
+    componentName: 'avatar-group',
+    title: 'AvatarGroup stacked separation',
+    summary:
+      'Each stacked avatar (and the +N overflow tile) now carries a 1px hairline border on top of the existing 2px background ring, so neighbouring circles read as clearly separated even when the avatar content is close in tone to the page background. The group also forwards the resolved size prop to each child Avatar so the new AvatarImage blurred-backdrop layer gates correctly inside groups.',
+    kind: 'changed',
+  },
+  {
     date: '2026-05-16',
     componentName: 'table-list-cell',
     title: 'TableListCell',

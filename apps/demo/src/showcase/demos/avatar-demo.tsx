@@ -1,5 +1,21 @@
 import { DemoSection } from '@/showcase/component-page';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
+// Small SVG-as-data-URL with a transparent background, used to show how
+// transparent-PNG avatars now render against the bg-muted base instead of
+// bleeding the page background through the circle.
+const TRANSPARENT_CHARACTER = `data:image/svg+xml;utf8,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+    <circle cx="40" cy="30" r="14" fill="#3b82f6"/>
+    <path d="M40 48c-12 0-22 8-22 18v14h44V66c0-10-10-18-22-18z" fill="#3b82f6"/>
+  </svg>`
+)}`;
+
+const PHOTO_URLS = [
+  'https://i.pravatar.cc/128?img=12',
+  'https://i.pravatar.cc/128?img=32',
+  'https://i.pravatar.cc/128?img=47',
+];
 
 export default function AvatarDemo() {
   return (
@@ -175,6 +191,48 @@ export default function AvatarDemo() {
               <Avatar key={letter}>
                 <AvatarFallback>{letter}</AvatarFallback>
               </Avatar>
+            ))}
+          </div>
+        </div>
+      </DemoSection>
+
+      <DemoSection
+        title="With image — blurred backdrop"
+        code={`<Avatar size="lg">
+  <AvatarImage src="/avatar.png" alt="Alice Reyes" />
+  <AvatarFallback>Alice Reyes</AvatarFallback>
+</Avatar>`}
+      >
+        <p className="text-sm text-muted-foreground">
+          When an <code className="font-mono text-xs">AvatarImage</code> is rendered at{' '}
+          <code className="font-mono text-xs">md</code> or larger, the same image is also drawn behind the foreground as
+          a scaled-up, desaturated, blurred backdrop. Opaque photos get a soft ambient color halo. Transparent PNGs (see
+          the second row) get a soft character halo on top of the new <code className="font-mono text-xs">bg-muted</code>{' '}
+          base so they never bleed the page background. <code className="font-mono text-xs">xs</code> and{' '}
+          <code className="font-mono text-xs">sm</code> avatars skip the backdrop layer — the blur is invisible at that
+          scale and the extra image decode is wasted work.
+        </p>
+        <div className="flex flex-col gap-6 pt-3">
+          <div className="flex items-end gap-4">
+            {(['sm', 'md', 'lg', 'xl'] as const).map((size, idx) => (
+              <div key={size} className="flex flex-col items-center gap-2">
+                <Avatar size={size}>
+                  <AvatarImage src={PHOTO_URLS[idx % PHOTO_URLS.length]} alt="" />
+                  <AvatarFallback>JD</AvatarFallback>
+                </Avatar>
+                <span className="text-xs text-muted-foreground">{size}</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-end gap-4">
+            {(['sm', 'md', 'lg', 'xl'] as const).map((size) => (
+              <div key={size} className="flex flex-col items-center gap-2">
+                <Avatar size={size}>
+                  <AvatarImage src={TRANSPARENT_CHARACTER} alt="" />
+                  <AvatarFallback>?</AvatarFallback>
+                </Avatar>
+                <span className="text-xs text-muted-foreground">{size} · transparent PNG</span>
+              </div>
             ))}
           </div>
         </div>

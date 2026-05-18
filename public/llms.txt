@@ -347,6 +347,26 @@ Each entry contains:
 
 ---
 
+### 2026-05-18
+
+#### avatar — bg-muted base + self-blurred ambient backdrop at md+ sizes
+
+- **component**: Avatar, AvatarImage
+- **change**: modified
+- **breaking**: no
+- **details**: Fixes the long-standing case where transparent-PNG avatars bled the page background through the avatar shape (the "floating character on the page" look). Three layered changes: (1) the `AvatarPrimitive.Root` class now includes `bg-muted` so any transparent region of an image sits on a clean muted circle instead of the page. (2) `AvatarImage` reads the parent Avatar size from a new internal `AvatarSizeContext`; when the size is `md`, `lg`, `xl`, or the legacy `h-10 w-10` default (no `size` set), it renders a second copy of the same image as an ambient backdrop layer: `absolute inset-0 scale-[1.75] object-cover blur-md saturate-50 opacity-60 pointer-events-none aria-hidden`. The browser cache deduplicates the second image so there's no extra network request. The blurred copy is desaturated + dimmed so the crisp foreground stays visually dominant — borrowed from the Apple-Music / Spotify art-as-background pattern. (3) `xs` and `sm` skip the backdrop layer — the blur is invisible at 20–28px and the extra image decode would be wasted in dense lists (table rows, inline cells, AvatarGroups at sm). The colorized `AvatarFallback` is unchanged: when no image is loaded the existing per-character OKLCH hue still wins, so the no-image path looks exactly as before. Internal stacking order: Root bg < backdrop (z-auto) < foreground image (`relative z-10`) < Fallback when shown (`relative z-20`).
+- **action**: none required. The fix is automatic for all current `<Avatar><AvatarImage src=… /></Avatar>` call sites. If a project relied on the previous transparent-background behavior (e.g. an icon-style avatar intentionally bleeding into a coloured surface), override with `className="bg-transparent"` on the Avatar Root.
+
+#### avatar-group — 1px hairline border per stacked avatar + size prop pass-through
+
+- **component**: AvatarGroup
+- **change**: modified
+- **breaking**: no
+- **details**: Each stacked avatar (and the `+N` overflow tile) now carries `border border-border/60 ring-2 ring-background` instead of `ring-2 ring-background` alone. The ring punches each circle out of its neighbour (unchanged); the new hairline keeps the edge readable when the avatar content is close in tone to the page background — e.g. dark transparent-PNG avatars on a dark surface, where the page-color ring and the avatar interior would otherwise blur together. `border-border/60` measures well above the SC 1.4.11 3:1 non-text-contrast minimum in both themes against `--background` and `--card`. AvatarGroup now also forwards the resolved `size` prop down to each child Avatar (was: only className) so the new `AvatarSizeContext` in `AvatarImage` correctly gates the blurred-backdrop layer for grouped avatars (`xs` / `sm` groups → no backdrop, `md`+ groups → backdrop on each child). The local `avatarSizeClass` import was dropped from `avatar-group.tsx` because the size prop pass-through means Avatar produces its own size className internally — `avatarSizeClass` is still exported from the avatar module for external consumers.
+- **action**: none required.
+
+---
+
 ### 2026-05-16
 
 #### table-list-cell — new component (two-line primary cell for table rows)

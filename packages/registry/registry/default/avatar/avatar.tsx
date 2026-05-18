@@ -1,4 +1,12 @@
-import { forwardRef, type ComponentPropsWithoutRef, type CSSProperties, type ElementRef, type ReactNode } from 'react';
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  type ComponentPropsWithoutRef,
+  type CSSProperties,
+  type ElementRef,
+  type ReactNode,
+} from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 
 import { cn, getInitialName } from '@/lib';
@@ -18,6 +26,14 @@ const avatarSizeClass: Record<AvatarSize, string> = {
   xl: 'size-16 text-lg',
 };
 
+// Sizes where the blurred-backdrop layer is large enough to be readable.
+// xs / sm skip it — the blur radius is barely visible at 20–28px and the
+// extra image decode is wasted work in dense lists. `undefined` is the
+// legacy h-10 w-10 default, which sits between md and lg.
+const BACKDROP_SIZES = new Set<AvatarSize | undefined>(['md', 'lg', 'xl', undefined]);
+
+const AvatarSizeContext = createContext<AvatarSize | undefined>(undefined);
+
 type AvatarProps = ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> & {
   shape?: AvatarShape;
   /**
@@ -36,18 +52,23 @@ const Avatar = forwardRef<ElementRef<typeof AvatarPrimitive.Root>, AvatarProps>(
   ({ className, shape, size, compact, ...props }, ref) => {
     const resolvedSize: AvatarSize | undefined = compact ? 'xs' : size;
     return (
-      <AvatarPrimitive.Root
-        ref={ref}
-        data-shape={shape ?? 'circle'}
-        data-size={resolvedSize}
-        className={cn(
-          'relative flex shrink-0 overflow-hidden',
-          resolvedSize ? avatarSizeClass[resolvedSize] : 'h-10 w-10',
-          shapeClass(shape),
-          className
-        )}
-        {...props}
-      />
+      <AvatarSizeContext.Provider value={resolvedSize}>
+        <AvatarPrimitive.Root
+          ref={ref}
+          data-shape={shape ?? 'circle'}
+          data-size={resolvedSize}
+          className={cn(
+            // bg-muted gives an opaque base so a transparent-PNG avatar never
+            // bleeds the page through the avatar shape. Covered by the image
+            // once loaded and by the (possibly colorized) Fallback before then.
+            'relative flex shrink-0 overflow-hidden bg-muted',
+            resolvedSize ? avatarSizeClass[resolvedSize] : 'h-10 w-10',
+            shapeClass(shape),
+            className
+          )}
+          {...props}
+        />
+      </AvatarSizeContext.Provider>
     );
   }
 );
@@ -56,9 +77,32 @@ Avatar.displayName = AvatarPrimitive.Root.displayName;
 const AvatarImage = forwardRef<
   ElementRef<typeof AvatarPrimitive.Image>,
   ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Image ref={ref} className={cn('aspect-square h-full w-full', className)} {...props} />
-));
+>(({ className, src, ...props }, ref) => {
+  const size = useContext(AvatarSizeContext);
+  const showBackdrop = BACKDROP_SIZES.has(size) && typeof src === 'string' && src.length > 0;
+
+  return (
+    <>
+      {showBackdrop && (
+        <AvatarPrimitive.Image
+          aria-hidden
+          src={src}
+          // Self-blurred, desaturated copy of the image used as an ambient
+          // backdrop. Scale-1.75 + blur-md spreads opaque pixels outward so
+          // transparent-PNG avatars get a soft halo instead of page-bg bleed;
+          // saturate-50 + opacity-60 keeps the foreground visually dominant.
+          className="pointer-events-none absolute inset-0 h-full w-full scale-[1.75] object-cover opacity-60 blur-md saturate-50"
+        />
+      )}
+      <AvatarPrimitive.Image
+        ref={ref}
+        src={src}
+        className={cn('relative z-10 aspect-square h-full w-full', className)}
+        {...props}
+      />
+    </>
+  );
+});
 AvatarImage.displayName = AvatarPrimitive.Image.displayName;
 
 const AVATAR_HUE_STEP = 360 / 26;
@@ -115,8 +159,10 @@ const AvatarFallback = forwardRef<ElementRef<typeof AvatarPrimitive.Fallback>, A
         ref={ref}
         className={cn(
           // Inherit the parent Avatar's rounded-* (full or md) so square avatars
-          // don't show a round fallback while loading.
-          'flex h-full w-full items-center justify-center rounded-[inherit] bg-muted',
+          // don't show a round fallback while loading. The Root already paints
+          // bg-muted underneath, but keep it here too so the Fallback covers
+          // any backdrop-image layer that already rendered.
+          'relative z-20 flex h-full w-full items-center justify-center rounded-[inherit] bg-muted',
           className
         )}
         style={computedStyle}

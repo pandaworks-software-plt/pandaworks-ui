@@ -83,8 +83,14 @@ Props (`Avatar`):
 - `size?: "xs" | "sm" | "md" | "lg" | "xl"` — pick a size from the shared `AvatarSize` scale (`xs` `size-5`, `sm` `size-7`, `md` `size-9`, `lg` `size-12`, `xl` `size-16`). Omit to keep the historical `h-10 w-10` default. The same scale is exported as `avatarSizeClass` and reused by `AvatarGroup` and `UserPicker`.
 - `compact?: boolean` — shorthand for `size="xs"`. Wins over `size` when both are set.
 
+The Avatar root carries a `bg-muted` base layer so transparent-PNG avatars never bleed the page background through the avatar shape. Opaque images and the colorized `AvatarFallback` cover this layer in normal use; you only see it for the brief window before an image loads, or for genuinely transparent image sources without a Fallback.
+
+Props (`AvatarImage`):
+- All `<img>` props (`src`, `alt`, `onLoad`, `onError`, …) and `className` pass through to Radix's `AvatarPrimitive.Image`.
+- **Blurred backdrop layer**: when the parent `Avatar` size is `md`, `lg`, `xl`, or the legacy default (no `size` set), `AvatarImage` automatically renders a second copy of the same image behind the foreground as a scaled-up (`scale-[1.75]`), desaturated (`saturate-50`), blurred (`blur-md`), `opacity-60` backdrop. Opaque photos get a soft ambient color halo; transparent PNGs get a soft character halo over the muted base. `xs` and `sm` skip the backdrop — the blur is invisible at that scale and the extra decode would be wasted in dense lists. The browser cache deduplicates the second image so there's no extra network request. The backdrop is `aria-hidden`.
+
 Props (`AvatarFallback`):
-- `colorize?: boolean` -- derive background color from the first rendered character (default: `true`). Pass `colorize={false}` to fall back to `bg-muted`.
+- `colorize?: boolean` -- derive background color from the first rendered character (default: `true`). Pass `colorize={false}` to fall back to `bg-muted`. Unchanged behavior: the colorized hue still wins when the Fallback renders, so the no-image path looks exactly as before.
 
 If you need the initials helper outside the Avatar (e.g. for `aria-label`, sorting, or non-Avatar UI), import it directly:
 
@@ -121,7 +127,7 @@ Props:
 - `size?: "xs" | "sm" | "md" | "lg" | "xl"` — tile size. Default `sm`.
 - `shape?: "circle" | "square"` — group-level shape; per-`Avatar` `shape` wins if set.
 
-Each child `Avatar`'s `className` is merged with the group's size and ring classes — children don't need their own size className.
+Each child `Avatar`'s `size` and `className` are overridden with the group's size and stack-separation classes. Stacked avatars now carry both a 2px page-background ring (`ring-2 ring-background`) and a 1px hairline border (`border border-border/60`). The ring punches each circle out of its neighbour; the hairline keeps the edge readable when the avatar content is close in tone to the page background — e.g. dark transparent-PNG avatars on a dark surface. The blurred-backdrop layer from `AvatarImage` (`md`+ sizes) carries through to grouped avatars automatically.
 
 Sizing:
 
